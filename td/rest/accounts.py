@@ -1,0 +1,228 @@
+from enum import Enum
+from datetime import datetime
+from datetime import date
+from td.enums.enums import QueryTransactionType
+from td.models.base_api_model import BaseApiModel
+from td.models.rest.response import SecuritiesAccount, Transaction
+from td.session import TdAmeritradeSession
+
+
+class Accounts:
+
+    """
+    ## Overview
+    ----
+    Allows the user to retrieve account information.
+    """
+
+    def __init__(self, session: TdAmeritradeSession) -> None:
+        """Initializes the `Accounts` services.
+
+        ### Parameters
+        ----
+        session : TdAmeritradeSession
+            An authenticated `TDAmeritradeSession
+            object.
+        """
+
+        self.session = session
+
+    def get_accounts(
+        self,
+        account_id: str | None = None,
+        include_orders: bool = True,
+        include_positions: bool = True,
+    ) -> dict | list:
+        """Queries accounts for a user.
+
+        ### Overview
+        ----
+        Serves as the mechanism to make a request to the
+        "Get Accounts" and "Get Account" Endpoint. If one
+        account is provided a "Get Account" request will
+        be made and if more than one account is provided
+        then a "Get Accounts" request will be made.
+
+        ### Documentation
+        ----
+        https://developer.tdameritrade.com/account-access/apis
+
+        ### Parameters
+        ----
+        account_id: str (optional, default=None)
+            The account number you wish to recieve data on.
+            If no account ID is provided then all accounts will
+            be queried.
+
+        include_orders: bool (optional, default=False)
+            If set to `True` then account orders will be returned
+            from the API. If set to `False` no orders will be
+            returned.
+
+        include_positions: bool (optional, default=False)
+            If set to `True` then account positions will be returned
+            from the API. If set to `False` no positions will be
+            returned.
+
+        ### Usage
+        ----
+            >>> account_services = td_client.accounts()
+            >>> account_services.get_accounts(
+                account_id='123456789',
+                include_orders=True,
+                include_positions=True
+            )
+        """
+
+        fields = []
+
+        if account_id is None:
+            endpoint = "accounts"
+        else:
+            endpoint = f"accounts/{account_id}"
+
+        if include_orders:
+            fields.append("orders")
+
+        if include_positions:
+            fields.append("positions")
+        params = {
+            "fields": ",".join(fields),
+        }
+
+        res = self.session.make_request(method="get", endpoint=endpoint, params=params)
+
+        if res:
+            if not isinstance(res, list):
+                securities_account = res.get("securitiesAccount")
+                if securities_account:
+                    return SecuritiesAccount(**securities_account)
+                return {}
+            else:
+                if len(res):
+                    temp = []
+                    for x in res:
+                        securities_account = x.get("securitiesAccount")
+                        if securities_account:
+                            temp.append(SecuritiesAccount(**securities_account))
+                    return temp
+                return []
+
+    def get_transactions(
+        self,
+        account_id: str,
+        transaction_type: str | QueryTransactionType = None,
+        symbol: str = None,
+        start_date: datetime | date | str = None,
+        end_date: datetime | date | str = None,
+    ) -> dict:
+        """Queries the transactions for an account.
+
+        ### Documentation
+        ----
+        https://developer.tdameritrade.com/transaction-history/apis
+
+        ### Parameters
+        ----
+        account_id: str
+            The account number you want to query transactions
+            for.
+
+        transaction_type: Union[str, Enum] (optional, default=None)
+            The type of transaction you want to query. For more info,
+            review the documentation for a full list of transaction
+            types, or review the `td.enums` file.
+
+        symbol: str (optional, default=None)
+            Filters the transaction to the ones that only include
+            the symbol provided.
+
+        start_date: datetime | date | str (optional, default=None)
+            Only transactions after the start date will be returned.
+            Note: The maximum date range is one year. Valid ISO-8601
+            formats are: yyyy-MM-dd.
+
+        end_date: datetime | date | str (optional, default=None)
+            Only transactions before the end date will be returned.
+            Note: The maximum date range is one year. Valid ISO-8601
+            formats are: yyyy-MM-dd.
+
+        ### Usage
+        ----
+            >>> account_services = td_client.accounts()
+            >>> account_services.get_transactions(
+                account_id='123456789',
+                transaction_type='ALL'
+            )
+        """
+
+        if isinstance(transaction_type, str):
+            try:
+                QueryTransactionType(transaction_type)
+            except ValueError as e:
+                raise e
+
+        if isinstance(transaction_type, Enum):
+            transaction_type = transaction_type.value
+
+        if start_date:
+            start_date = BaseApiModel.validate_iso_date_field(start_date)
+        if end_date:
+            end_date = BaseApiModel.validate_iso_date_field(end_date)
+
+        params = {
+            "type": transaction_type,
+            "startDate": start_date,
+            "endDate": end_date,
+            "symbol": symbol,
+        }
+
+        res = self.session.make_request(
+            method="get", endpoint=f"accounts/{account_id}/transactions", params=params
+        )
+
+        if len(res):
+            return [Transaction(**x) for x in res]
+        return []
+
+    def get_transaction(self, account_id: str, transaction_id: str) -> dict:
+        """Queries a transaction for a specific account.
+
+        ### Overview
+        ----
+        Serves as the mechanism to make a request to the "Get Transaction"
+        Endpoint. The transaction ID will be queried for the specific account
+        passed through.
+
+        ### Documentation
+        ----
+        https://developer.tdameritrade.com/transaction-history/apis
+
+        ### Parameters
+        ----
+        account_id: str
+            The account number you want to query transactions
+            for.
+
+        transaction_id: str
+            If set to `True` then account orders will be returned
+            from the API. If set to `False` no orders will be
+            returned.
+
+        ### Usage
+        ----
+            >>> account_services = td_client.accounts()
+            >>> account_services.get_transaction(
+                account_id='123456789',
+                transaction_id='123456789'
+            )
+        """
+
+        res = self.session.make_request(
+            method="get",
+            endpoint=f"accounts/{account_id}/transactions/{transaction_id}",
+        )
+
+        if res:
+            return Transaction(**res)
+        return {}
