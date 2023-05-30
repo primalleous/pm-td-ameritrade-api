@@ -123,7 +123,7 @@ class Order(BaseOrdersModel):
     price_link_type: str | PriceLinkType | None = None
     price: float | None = None
     tax_lot_method: str | TaxLotMethod | None = None
-    order_leg_collection: List[OrderLeg]  #
+    order_leg_collection: List[OrderLeg] | None  #
     activation_price: float | None = None
     special_instruction: str | SpecialInstruction | None = None
     order_strategy_type: str | OrderStrategyType | None = None
