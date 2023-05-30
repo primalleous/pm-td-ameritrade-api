@@ -1,4 +1,3 @@
-# pylint: disable=line-too-long
 from datetime import datetime
 from pathlib import Path
 import os

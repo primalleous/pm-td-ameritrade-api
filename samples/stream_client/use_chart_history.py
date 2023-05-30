@@ -27,9 +27,7 @@ stream_services = stream_client.services
 chart_history_symbol_queue = asyncio.Queue()
 
 try:
-    tda_futures_csv_path = Path(
-        config.symbols.tda_futures_path
-    )  # pylint: disable=E1101:no-member
+    tda_futures_csv_path = Path(config.symbols.tda_futures_path)
 except AttributeError:
     tda_futures_csv_path = None
     chart_history_handler = ChartHistoryFuturesHandler(
