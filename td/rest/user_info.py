@@ -18,13 +18,13 @@ class UserInfo:
     def __init__(self, session: TdAmeritradeSession) -> None:
         """Initializes the `UserInfo` services.
 
-        ### Parameters
+        Parameters
         ----
         session : TdAmeritradeSession
             An authenticated `TDAmeritradeSession
             object.
 
-        ### Usage
+        Usage
         ----
             >>> user_info_service = td_client.user_service()
         """
@@ -34,16 +34,16 @@ class UserInfo:
     def get_preferences(self, account_id: str) -> dict:
         """Get's User Preferences for a specific account.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/user-principal/apis/get/accounts/%7BaccountId%7D/preferences-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The User's TD Ameritrade account ID.
 
-        ### Usage
+        Usage
         ----
             >>> user_info_service = td_client.user_service()
             >>> user_info_service.get_preferences(
@@ -59,16 +59,16 @@ class UserInfo:
     def get_streamer_subscription_keys(self, account_ids: List[str]) -> dict:
         """SubscriptionKey for provided accounts or default accounts.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/user-principal/apis/get/userprincipals/streamersubscriptionkeys-0
 
-        ### Parameters
+        Parameters
         ----
         account_ids: List[str]
             A list of account IDs.
 
-        ### Usage
+        Usage
         ----
             >>> user_info_service = td_client.user_service()
             >>> user_info_service.get_streamer_subscription_keys(
@@ -87,11 +87,11 @@ class UserInfo:
     def get_user_principals(self) -> dict:
         """Get's User principals details.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/user-principal/apis/get/userprincipals-0
 
-        ### Usage
+        Usage
         ----
             >>> user_info_service = td_client.user_service()
             >>> user_info_service.get_user_principals()
@@ -110,11 +110,11 @@ class UserInfo:
     ) -> dict:
         """Update preferences for a specific account.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/user-principal/apis/put/accounts/%7BaccountId%7D/preferences-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The User's TD Ameritrade account ID.
@@ -123,7 +123,7 @@ class UserInfo:
             The preferences you want changed, either as a python
             dict or a `UserPreferences` object.
 
-        ### Usage
+        Usage
         ----
             >>> user_service = td_client.user_service()
             >>> user_info_service.update_user_preferences(

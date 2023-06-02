@@ -18,7 +18,7 @@ class OptionsChain:
     def __init__(self, session: TdAmeritradeSession) -> None:
         """Initializes the `OptionsChain` services.
 
-        ### Parameters
+        Parameters
         ----
         session : TdAmeritradeSession
             An authenticated `TDAmeritradeSession
@@ -31,17 +31,17 @@ class OptionsChain:
     def get_option_chain(self, option_chain_query: OptionChainQuery) -> OptionChain:
         """Get option chain for an optionable Symbol.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/option-chains/apis/get/marketdata/chains
 
-        ### Parameters
+        Parameters
         ----
         option_chain_query: OptionChainQuery
 
-        ### NOTE: Filters such as ITM/OTM/DTE don't seem to work.
+        NOTE: Filters such as ITM/OTM/DTE don't seem to work.
 
-        ### Usage
+        Usage
         ----
             1. Population by field names specified in `OptionChainQuery`
             >>> options_chain_service = td_client.options_chain()

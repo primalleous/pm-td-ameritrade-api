@@ -16,7 +16,7 @@ class MarketHours:
     def __init__(self, session: TdAmeritradeSession) -> None:
         """Initializes the `MarketHours` services.
 
-        ### Parameters
+        Parameters
         ----
         session : TdAmeritradeSession
             An authenticated `TDAmeritradeSession
@@ -29,15 +29,15 @@ class MarketHours:
     def get_multiple_market_hours(self, market_hours_query: MarketHoursQuery) -> dict:
         """Returns the market hours for all the markets.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/market-hours/apis
 
-        ### Parameters
+        Parameters
         ----
         market_hours_query : MarketHoursQuery
 
-        ### Usage
+        Usage
         ----
             1. Population by field names specified in `MarketHoursQuery`
             >>> market_hours_service = td_client.market_hours()
@@ -70,15 +70,15 @@ class MarketHours:
     def get_market_hours(self, market_hours_query: MarketHoursQuery) -> dict:
         """Returns the market hours for the specified market.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/market-hours/apis
 
-        ### Parameters
+        Parameters
         ----
         market_hours_query : MarketHoursQuery
 
-        ### Usage
+        Usage
         ----
             1. Population by field names specified in `MarketHoursQuery`
             >>> market_hours_service = td_client.market_hours()

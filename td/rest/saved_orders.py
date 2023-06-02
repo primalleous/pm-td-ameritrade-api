@@ -16,7 +16,7 @@
 #     def __init__(self, session: TdAmeritradeSession) -> None:
 #         """Initializes the `SavedOrders` services.
 
-#         ### Parameters
+#         Parameters
 #         ----
 #         session : TdAmeritradeSession
 #             An authenticated `TDAmeritradeSession
@@ -31,17 +31,17 @@
 #     ) -> dict:
 #         """Returns the saved orders for a specific account.
 
-#         ### Documentation
+#         Documentation
 #         ----
 #         https://developer.tdameritrade.com/account-access/apis/get/accounts/%7BaccountId%7D/savedorders-0
 
-#         ### Parameters
+#         Parameters
 #         ----
 #         account_id: str
 #             The account number that you want to
 #             query for saved orders.
 
-#         ### Usage
+#         Usage
 #         ----
 #             >>> saved_orders_service = td_client.saved_orders()
 #             >>> saved_orders_service.get_saved_orders_by_path(
@@ -64,11 +64,11 @@
 #     ) -> dict:
 #         """Get a specific saved order for a specific account.
 
-#         ### Documentation
+#         Documentation
 #         ----
 #         https://developer.tdameritrade.com/account-access/apis/get/accounts/%7BaccountId%7D/savedorders/%7BsavedOrderId%7D-0
 
-#         ### Parameters
+#         Parameters
 #         ----
 #         account_id: str
 #             The account number that you want to
@@ -77,7 +77,7 @@
 #         saved_order_id: str
 #             The order ID you want to query.
 
-#         ### Usage
+#         Usage
 #         ----
 #             >>> saved_orders_service = td_client.saved_orders()
 #             >>> saved_orders_service.get_order(
@@ -103,11 +103,11 @@
 #         """Create a saved order for a specific account. Order throttle
 #         limits may apply.
 
-#         ### Documentation
+#         Documentation
 #         ----
 #         https://developer.tdameritrade.com/account-access/apis/post/accounts/%7BaccountId%7D/savedorders-0
 
-#         ### Parameters
+#         Parameters
 #         ----
 #         account_id: str (optional, Default=None)
 #             The account number that you want to
@@ -124,7 +124,7 @@
 #             dictionary object. No additional checks will be made on the
 #             inputs to validate them.
 
-#         ### Usage
+#         Usage
 #         ----
 #             >>> saved_orders_service = td_client.saved_orders()
 #             >>> saved_orders_service.place_saved_order(
@@ -157,17 +157,17 @@
 #     ) -> dict:
 #         """Replace an existing saved order for an account.
 
-#         ### Overview
+#         Overview
 #         ----
 #         The existing order will be replaced by the new saved order. Once
 #         replaced, the old saved order will be canceled and a new order
 #         will be created. Order throttle limits may apply.
 
-#         ### Documentation
+#         Documentation
 #         ----
 #         https://developer.tdameritrade.com/account-access/apis/put/accounts/%7BaccountId%7D/savedorders/%7BsavedOrderId%7D-0
 
-#         ### Parameters
+#         Parameters
 #         ----
 #         account_id: str (optional, Default=None)
 #             The account number that you want to
@@ -187,7 +187,7 @@
 #             dictionary object. No additional checks will be made on the
 #             inputs to validate them.
 
-#         ### Usage
+#         Usage
 #         ----
 #             >>> saved_orders_service = td_client.saved_orders()
 #             >>> saved_orders_service.replace_saved_order(
@@ -220,11 +220,11 @@
 #         """Deletes a saved order for a specific account. Order throttle
 #         limits may apply.
 
-#         ### Documentation
+#         Documentation
 #         ----
 #         https://developer.tdameritrade.com/account-access/apis/delete/accounts/%7BaccountId%7D/savedorders/%7BsavedOrderId%7D-0
 
-#         ### Parameters
+#         Parameters
 #         ----
 #         account_id: str (optional, Default=None)
 #             The account number that contains the saved order
@@ -233,7 +233,7 @@
 #         saved_order_id: str (optional, Default=None)
 #             The saved order ID of the order you want to cancel.
 
-#         ### Usage
+#         Usage
 #         ----
 #             >>> saved_orders_service = td_client.saved_orders()
 #             >>> saved_orders_service.cancel_saved_order(

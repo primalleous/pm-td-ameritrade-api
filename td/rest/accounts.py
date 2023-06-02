@@ -10,7 +10,7 @@ from td.session import TdAmeritradeSession
 class Accounts:
 
     """
-    ## Overview
+    Overview
     ----
     Allows the user to retrieve account information.
     """
@@ -18,7 +18,7 @@ class Accounts:
     def __init__(self, session: TdAmeritradeSession) -> None:
         """Initializes the `Accounts` services.
 
-        ### Parameters
+        Parameters
         ----
         session : TdAmeritradeSession
             An authenticated `TDAmeritradeSession
@@ -35,7 +35,7 @@ class Accounts:
     ) -> dict | list:
         """Queries accounts for a user.
 
-        ### Overview
+        Overview
         ----
         Serves as the mechanism to make a request to the
         "Get Accounts" and "Get Account" Endpoint. If one
@@ -43,11 +43,11 @@ class Accounts:
         be made and if more than one account is provided
         then a "Get Accounts" request will be made.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/account-access/apis
 
-        ### Parameters
+        Parameters
         ----
         account_id: str (optional, default=None)
             The account number you wish to recieve data on.
@@ -64,7 +64,7 @@ class Accounts:
             from the API. If set to `False` no positions will be
             returned.
 
-        ### Usage
+        Usage
         ----
             >>> account_services = td_client.accounts()
             >>> account_services.get_accounts(
@@ -118,11 +118,11 @@ class Accounts:
     ) -> dict:
         """Queries the transactions for an account.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/transaction-history/apis
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The account number you want to query transactions
@@ -147,7 +147,7 @@ class Accounts:
             Note: The maximum date range is one year. Valid ISO-8601
             formats are: yyyy-MM-dd.
 
-        ### Usage
+        Usage
         ----
             >>> account_services = td_client.accounts()
             >>> account_services.get_transactions(
@@ -188,17 +188,17 @@ class Accounts:
     def get_transaction(self, account_id: str, transaction_id: str) -> dict:
         """Queries a transaction for a specific account.
 
-        ### Overview
+        Overview
         ----
         Serves as the mechanism to make a request to the "Get Transaction"
         Endpoint. The transaction ID will be queried for the specific account
         passed through.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/transaction-history/apis
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The account number you want to query transactions
@@ -209,7 +209,7 @@ class Accounts:
             from the API. If set to `False` no orders will be
             returned.
 
-        ### Usage
+        Usage
         ----
             >>> account_services = td_client.accounts()
             >>> account_services.get_transaction(
