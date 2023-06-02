@@ -17,7 +17,7 @@ class Movers:
     def __init__(self, session: TdAmeritradeSession) -> None:
         """Initializes the `Movers` services.
 
-        ### Parameters
+        Parameters
         ----
         session : TdAmeritradeSession
             An authenticated `TDAmeritradeSession
@@ -30,20 +30,20 @@ class Movers:
     def get_movers(self, movers_query: MoversQuery) -> List[Mover]:
         """Gets Active movers for a specific Index.
 
-        ### Overview
+        Overview
         ----
         Top 10 (up or down) movers by value or percent for
         a particular market.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/movers/apis/get/marketdata
 
-        ### Parameters
+        Parameters
         ----
         movers_query : MoversQuery
 
-        ### Usage
+        Usage
         ----
             1. Population by field names specified in `MoversQuery`
             >>> movers_service = td_client.movers()

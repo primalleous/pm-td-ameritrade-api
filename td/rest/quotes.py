@@ -25,7 +25,7 @@ class Quotes:
     def __init__(self, session: TdAmeritradeSession) -> None:
         """Initializes the `Quotes` services.
 
-        ### Parameters
+        Parameters
         ----
         session : TdAmeritradeSession
             An authenticated `TDAmeritradeSession
@@ -37,23 +37,23 @@ class Quotes:
     def get_quote(self, instrument=str) -> dict:
         """Grabs real-time quotes for an instrument.
 
-        ### Overview
+        Overview
         ----
         Serves as the mechanism to make a request to the Get
         Quote and Get Quotes Endpoint. If one item is provided
         a Get Quote request will be made and if more than one
         item is provided then a Get Quotes request will be made.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/quotes/apis
 
-        ### Parameters
+        Parameters
         ----
         instruments: str
             A list of different financial instruments.
 
-        ### Usage
+        Usage
         ----
             >>> quote_service = td_client.quotes()
             >>> quote_service.get_quote(instrument='AAPL')
@@ -92,7 +92,7 @@ class Quotes:
     def get_quotes(self, instruments=List[str]) -> dict:
         """Grabs real-time quotes for multiple instruments.
 
-        ### Overview
+        Overview
         ----
         Serves as the mechanism to make a request to the Get
         Quote and Get Quotes Endpoint. If one item is provided
@@ -100,16 +100,16 @@ class Quotes:
         item is provided then a Get Quotes request will be made.
         Only 500 symbols can be sent at a single time.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/quotes/apis
 
-        ### Parameters
+        Parameters
         ----
         instruments: str
             A list of different financial instruments.
 
-        ### Usage
+        Usage
         ----
             >>> quote_service = td_client.quotes()
             >>> quote_service.get_quotes(instruments=['AAPL','SQ'])

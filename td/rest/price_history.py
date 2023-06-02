@@ -16,13 +16,13 @@ class PriceHistory:
     def __init__(self, session: TdAmeritradeSession) -> None:
         """Initializes the `PriceHistory` services.
 
-        ### Parameters
+        Parameters
         ----
         session : TdAmeritradeSession
             An authenticated `TDAmeritradeSession
             object.
 
-        ### Usage
+        Usage
         ----
             >>> td_client = TdAmeritradeClient()
             >>> price_history_service = td_client.price_history()
@@ -34,15 +34,15 @@ class PriceHistory:
     def get_price_history(self, price_history_query: PriceHistoryQuery) -> dict:
         """Gets historical candle data for a financial instrument.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/price-history/apis
 
-        ### Parameters
+        Parameters
         ----
         price_history_query : PriceHistoryQuery
 
-        ### Usage
+        Usage
         ----
             1. Population by field names specified in `PriceHistoryQuery`
             >>> price_history_service = td_client.price_history()

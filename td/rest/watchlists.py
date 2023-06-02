@@ -16,7 +16,7 @@ class Watchlists:
     def __init__(self, session: TdAmeritradeSession) -> None:
         """Initializes the `Watchlists` services.
 
-        ### Parameters
+        Parameters
         ----
         session : TdAmeritradeSession
             An authenticated `TDAmeritradeSession
@@ -28,11 +28,11 @@ class Watchlists:
     def get_all_accounts_watchlists(self) -> dict:
         """All watchlists for all of the user's linked accounts.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/watchlist/apis/get/accounts/watchlists-0
 
-        ### Usage
+        Usage
         ----
             >>> watchlists_service = td_client.watchlists()
             >>> watchlists_service.get_all_accounts_watchlists()
@@ -43,16 +43,16 @@ class Watchlists:
     def get_accounts_watchlist(self, account_id: str) -> dict:
         """Gets all the watchlists of an account.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/watchlist/apis/get/accounts/%7BaccountId%7D/watchlists-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The account number the watchlist belongs to.
 
-        ### Usage
+        Usage
         ----
             >>> watchlists_service = td_client.watchlists()
             >>> watchlists_service.get_accounts_watchlist(
@@ -67,11 +67,11 @@ class Watchlists:
     def get_watchlist(self, account_id: str, watchlist_id: str) -> dict:
         """Gets a specific watchlist for a specific account.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/watchlist/apis/get/accounts/%7BaccountId%7D/watchlists/%7BwatchlistId%7D-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The account number the watchlist belongs to.
@@ -79,7 +79,7 @@ class Watchlists:
         watchlist_id: str
             The watchlist ID you want to query.
 
-        ### Usage
+        Usage
         ----
             >>> watchlists_service = td_client.watchlists()
             >>> watchlists_service.get_watchlist(
@@ -97,16 +97,16 @@ class Watchlists:
     ) -> dict:
         """Creates a new watchlist.
 
-        ### Overview
+        Overview
         ----
         Create watchlist for specific account. This method does not verify
         that the symbol or asset type are valid.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/watchlist/apis/post/accounts/%7BaccountId%7D/watchlists-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The account number the watchlist belongs to.
@@ -118,7 +118,7 @@ class Watchlists:
             A list of items you want to add to your
             watchlist.
 
-        ### Usage
+        Usage
         ----
             >>> watchlists_service = td_client.watchlists()
             >>> watchlists_service.create_watchlist(
@@ -150,17 +150,17 @@ class Watchlists:
     ) -> dict:
         """Updates an existing watchlist.
 
-        ### Overview
+        Overview
         ----
         Partially update watchlist for a specific account: change watchlist name, add to the
         beginning/end of a watchlist, update or delete items in a watchlist. This method
         does not verify that the symbol or asset type are valid.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/watchlist/apis/patch/accounts/%7BaccountId%7D/watchlists/%7BwatchlistId%7D-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The account number the watchlist belongs to.
@@ -175,7 +175,7 @@ class Watchlists:
             A list of items you want to add to your
             watchlist.
 
-        ### Usage
+        Usage
         ----
             >>> watchlists_service = td_client.watchlists()
             >>> watchlists_service.update_watchlist(
@@ -211,17 +211,17 @@ class Watchlists:
     ) -> dict:
         """Replaces an existing watchlist.
 
-        ### Overview
+        Overview
         ----
         This method does not verify that the symbol or asset type are valid. Additionally,
         this method from what I can see will only append on new values. It will not delete
         an old watchlist.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/watchlist/apis/patch/accounts/%7BaccountId%7D/watchlists/%7BwatchlistId%7D-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The account number the watchlist belongs to.
@@ -236,7 +236,7 @@ class Watchlists:
             A list of items you want to add to your
             watchlist.
 
-        ### Usage
+        Usage
         ----
             >>> watchlists_service = td_client.watchlists()
             >>> watchlists_service.replace_watchlist(
@@ -270,11 +270,11 @@ class Watchlists:
     def delete_watchlist(self, account_id: str, watchlist_id: str) -> dict:
         """Deletes a watchlist for a specific account.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/watchlist/apis/delete/accounts/%7BaccountId%7D/watchlists/%7BwatchlistId%7D-0.
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The account number the watchlist belongs to.
@@ -282,7 +282,7 @@ class Watchlists:
         watchlist_id: str
             The watchlist ID you want to query.
 
-        ### Usage
+        Usage
         ----
             >>> watchlists_service = td_client.watchlists()
             >>> watchlists_service.delete_watchlist(

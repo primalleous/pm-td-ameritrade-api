@@ -20,7 +20,7 @@ class Orders:
     def __init__(self, session: TdAmeritradeSession) -> None:
         """Initializes the `Orders` services.
 
-        ### Parameters
+        Parameters
         ----
         session : TdAmeritradeSession
             An authenticated `TDAmeritradeSession
@@ -39,11 +39,11 @@ class Orders:
     ) -> List[Order]:
         """Returns the orders for a specific account.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/account-access/apis/get/accounts/%7BaccountId%7D/orders-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The account number that you want to
@@ -67,9 +67,9 @@ class Orders:
         status: Union[datetime, Enum] (optional, Default=None)
             Specifies that only orders of this status should be returned.
 
-        ### NOTE: Including status only works sometimes.
+        NOTE: Including status only works sometimes.
 
-        ### Usage
+        Usage
         ----
             >>> order_query = orders_service.get_orders_by_query(
                     account_number, order_status=OrderStatus.Filled
@@ -105,11 +105,11 @@ class Orders:
     def get_order(self, account_id: str, order_id: str) -> Order:
         """Get a specific order for a specific account.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/account-access/apis/get/accounts/%7BaccountId%7D/orders/%7BorderId%7D-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The account number that you want to
@@ -118,7 +118,7 @@ class Orders:
         order_id: str
             The order ID you want to query.
 
-        ### Usage
+        Usage
         ----
             >>> orders_service = td_client.orders()
             >>> orders_service.get_order(
@@ -143,11 +143,11 @@ class Orders:
     ) -> List[Order]:
         """Returns the orders for a specific account.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/account-access/apis/get/accounts/%7BaccountId%7D/orders-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str
             The account number that you want to
@@ -171,9 +171,9 @@ class Orders:
         status: Union[datetime, Enum] (optional, Default=None)
             Specifies that only orders of this status should be returned.
 
-        ### NOTE: Including status only works sometimes.
+        NOTE: Including status only works sometimes.
 
-        ### Usage
+        Usage
         ----
             >>> order_query = orders_service.get_orders_by_query(
                     account_number, order_status="CANCELED"
@@ -211,11 +211,11 @@ class Orders:
         """Place an order for a specific account. Order throttle
         limits may apply.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/account-access/apis/post/accounts/%7BaccountId%7D/orders-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str (optional, Default=None)
             The account number that you want to
@@ -225,7 +225,7 @@ class Orders:
             Represents an `Order` object that can be used to
             submit a new order to the TD Ameritrade API.
 
-        ### Usage
+        Usage
         ----
             >>> orders_service = td_client.orders()
             >>> orders_service.place_order(
@@ -246,17 +246,17 @@ class Orders:
     ) -> dict:
         """Replace an existing order for an account.
 
-        ### Overview
+        Overview
         ----
         The existing order will be replaced by the new order. Once
         replaced, the old order will be canceled and a new order
         will be created. Order throttle limits may apply.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/account-access/apis/put/accounts/%7BaccountId%7D/orders/%7BorderId%7D-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str (optional, Default=None)
             The account number that you want to
@@ -269,7 +269,7 @@ class Orders:
             Represents an `Order` object that can be used to
             submit a replacing order to the TD Ameritrade API.
 
-        ### Usage
+        Usage
         ----
             >>> orders_service = td_client.orders()
             >>> orders_service.replace_order(
@@ -291,11 +291,11 @@ class Orders:
         """Cancels an order for a specific account. Order throttle
         limits may apply.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/account-access/apis/delete/accounts/%7BaccountId%7D/orders/%7BorderId%7D-0
 
-        ### Parameters
+        Parameters
         ----
         account_id: str (optional, Default=None)
             The account number that contains the order
@@ -304,7 +304,7 @@ class Orders:
         order_id: str (optional, Default=None)
             The order ID of the order you want to cancel.
 
-        ### Usage
+        Usage
         ----
             >>> orders_service = td_client.orders()
             >>> orders_service.cancel_order(

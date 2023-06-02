@@ -204,7 +204,7 @@ class ChartHistoryFuturesHandler(BaseChartHistoryHandler):
 
     async def raw_message_handler(self, msg):
         """
-        Processes a message with the snapshot key and returns pydantic obj representation.
+        Processes a message with the snapshot key {"snapshot":...} and returns pydantic obj representation.
         """
         msg = msg["snapshot"][0]
         return self.construct_message(msg)

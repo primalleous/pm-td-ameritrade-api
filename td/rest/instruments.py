@@ -22,7 +22,7 @@ class Instruments:
     def __init__(self, session: TdAmeritradeSession) -> None:
         """Initializes the `Instruments` services.
 
-        ### Parameters
+        Parameters
         ----
         session : TdAmeritradeSession
             An authenticated `TDAmeritradeSession
@@ -35,15 +35,15 @@ class Instruments:
     def search_instruments(self, instruments_query: InstrumentsQuery) -> dict:
         """Search or retrieve instrument data, including fundamental data.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/instruments/apis/get/instruments
 
-        ### Parameters
+        Parameters
         ----
         instruments_query : InstrumentsQuery
 
-        ### Usage
+        Usage
         ----
             This method can be used in three different ways:
 
@@ -81,16 +81,16 @@ class Instruments:
     def get_instrument(self, cusip: str) -> dict:
         """Get an instrument by CUSIP.
 
-        ### Documentation
+        Documentation
         ----
         https://developer.tdameritrade.com/instruments/apis/get/instruments/%7Bcusip%7D
 
-        ### Parameters
+        Parameters
         ----
         cusip: str
             The CUSIP Id.
 
-        ### Usage
+        Usage
         ----
             >>> from td.enums import Instruments
             >>> instruments_service = td_client.instruments()
