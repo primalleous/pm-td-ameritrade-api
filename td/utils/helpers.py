@@ -194,23 +194,23 @@ def convert_to_unix_time_ms(time_to_convert: int | date | datetime):
 #         json.dump(raw_json, f)
 
 
-def default_futures_file_path(symbol, timeframe):
+def get_default_file_path(symbol, timeframe, instrument_type="future"):
     try:
-        tda_futures_base_path = Path(config.data_paths.futures_data_base_path)
+        data_base_path = Path(config.data_paths.data_base_path)
     except AttributeError:
         import inspect
 
         caller_path = (
             Path(inspect.getframeinfo(inspect.currentframe()).filename).resolve().parent
         )
-        tda_futures_base_path = caller_path
+        data_base_path = caller_path
 
     today = datetime.today()
     day, month, year = str(today.day), str(today.month), str(today.year)
     datepath = Path() / year / month / day
 
     symbol_processed = symbol.replace("/", "")
-    base_directory = tda_futures_base_path / timeframe / symbol_processed
+    base_directory = data_base_path / timeframe / instrument_type / symbol_processed
     filename = Path(symbol_processed + "-" + year + "-" + month + "-" + day + ".json")
     path = base_directory / datepath / filename
 

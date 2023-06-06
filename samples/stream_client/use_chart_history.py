@@ -27,7 +27,7 @@ stream_services = stream_client.services
 chart_history_symbol_queue = asyncio.Queue()
 
 try:
-    tda_futures_csv_path = Path(config.symbols.tda_futures_path)
+    tda_futures_csv_path = Path(config.symbols.tda_future_symbols_path)
 except AttributeError:
     tda_futures_csv_path = None
     chart_history_handler = ChartHistoryFuturesHandler(
@@ -84,25 +84,29 @@ async def get_futures_data():
             end_time=end_date,
         )
 
-        print("waiting for event")
-        await handled_event.wait()
-        print("done waiting for event")
+        try:
+            await asyncio.wait_for(handled_event.wait(), timeout=15)
+        except asyncio.TimeoutError:
+            print(
+                f"Timeout occurred while waiting for {future} {timeframe} {start_date} {end_date}"
+            )
 
         stream_services.remove_handler("snapshot", "CHART_HISTORY_FUTURES", func_ref)
+        stream_services.futures_unsub_chart_history()
 
-        print(stream_client.subscribed_services)
-
-        unsubscribe_request_made = False
         continue_requests = False
+        unsubscribed = False
+        handler_removed = False
         while not continue_requests:
             await asyncio.sleep(0.3)
             if not stream_services.is_subscribed("CHART_HISTORY_FUTURES"):
+                unsubscribed = True
+            if not stream_services.has_handler(
+                "snapshot", "CHART_HISTORY_FUTURES", func_ref
+            ):
+                handler_removed = True
+            if handler_removed and unsubscribed:
                 continue_requests = True
-            else:
-                if not unsubscribe_request_made:
-                    stream_services.futures_unsub_chart_history()
-                    unsubscribe_request_made = True
-        print(stream_client.subscribed_services)
 
         if chart_history_symbol_queue.empty():
             break
@@ -134,37 +138,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-
-
-# import asyncio, random
-#
-
-# async def blah(n):
-#     await asyncio.sleep(random.random())
-#     results.add(n)
-
-# async def doit(m):
-#     for i in range(m):
-#         asyncio.create_task(blah(i))
-#         await asyncio.sleep(0)
-#     await asyncio.sleep(1.01)
-
-# async def main(m):
-#     global results
-#     results = set()
-#     await doit(m)
-#     tasks = [t for t in asyncio.all_tasks() if t is not
-#         asyncio.current_task()]
-#     print(len(tasks))
-#     sleep(5)
-#     tasks = [t for t in asyncio.all_tasks() if t is not
-#             asyncio.current_task()]
-#     print(len(tasks))
-#     try:
-#         print(list(range(m)) == list(results))
-#         assert list(range(m)) == list(results)
-#     except AssertionError:
-#         print(f"For {m} tasks, missing {m - len(results)} results: {set(range(m)) - results}")
-
-# if __name__ == "__main__":
-#     asyncio.run(main(10000))

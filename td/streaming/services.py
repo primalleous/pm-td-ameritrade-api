@@ -1421,6 +1421,26 @@ class StreamingServices:
 
         self.stream_client.remove_handler(response_type, service, func_)
 
+    def has_handler(self, response_type: str, service: str | Enum, func_):
+        """
+        Removes a callback handler for a given response type and service.
+
+        Usage
+        ----
+            >>> stream_client = td_client.streaming_api_client()
+            >>> stream_services = stream_client.services
+            >>> duration = ActivesDurations.ALL.value
+            >>> stream_services.remove_handler(
+                "data",
+                ActivesServices.ACTIVES_NYSE,
+                func_ref
+            )
+        """
+        if isinstance(service, Enum):
+            service = service.value
+
+        self.stream_client.has_handler(response_type, service, func_)
+
     def is_subscribed(self, service: str | Enum):
         """
         Are you subscribed to given service.

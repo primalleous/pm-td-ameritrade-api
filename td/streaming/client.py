@@ -231,8 +231,6 @@ class StreamingApiClient:
         return self._run_threadsafe_wrapper(
             self._add_handler, response_type, service, func_
         )
-        # asyncio.run_coroutine_threadsafe(
-        #     self._add_handler(response_type, service, func_), self.loop)
 
     async def _remove_handler(self, response_type: str, service: str, func_):
         """Removes a handler for a received message"""
@@ -250,6 +248,25 @@ class StreamingApiClient:
 
         return self._run_threadsafe_wrapper(
             self._remove_handler, response_type, service, func_
+        )
+
+    async def _has_handler(self, response_type: str, service: str, func_):
+        """Removes a handler for a received message"""
+        async with self._handlers_lock:
+            if self._handlers.get((response_type, service), None):
+                try:
+                    handler = self._handlers[(response_type, service)]
+                    if handler == func_:
+                        return True
+                except ValueError:
+                    return False
+            return False
+
+    def has_handler(self, response_type: str, service: str, func_):
+        """Checks if a specific handler exists"""
+
+        return self._run_threadsafe_wrapper(
+            self._has_handler, response_type, service, func_
         )
 
     async def _send_data_requests(self):

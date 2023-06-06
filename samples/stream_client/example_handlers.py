@@ -20,7 +20,7 @@ from td.streaming.handlers import (
     BaseChartHistoryHandler,
     BaseDataMessageHandler,
 )
-from td.utils.helpers import default_futures_file_path, dict_to_json, save_raw_json
+from td.utils.helpers import get_default_file_path, dict_to_json, save_raw_json
 
 
 class SymbolDataUpdater(BaseDataMessageHandler):
@@ -191,15 +191,18 @@ class ChartHistoryFuturesHandler(BaseChartHistoryHandler):
             self.log.error(f"Message Construction Error: {e}")
 
     async def save_raw_msg(self, future, timeframe, msg):
+        """
+        Saves to directory specified in config data_paths section.
+        Uses calling directory if not specified.
+        """
         symbol = msg.content[0].symbol
         if future != symbol:
             raise ValueError(f"future {future} != symbol {symbol}")
         raw_json = {"snapshot": [msg.dict(by_alias=True)]}
 
-        path = default_futures_file_path(symbol, timeframe)
+        path = get_default_file_path(symbol, timeframe)
         await save_raw_json(raw_json, path)
 
-        print("setting event")
         self.handled_event.set()
 
     async def raw_message_handler(self, msg):

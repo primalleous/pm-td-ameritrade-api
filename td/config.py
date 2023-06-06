@@ -248,9 +248,9 @@ class SymbolsConfiguration:
 
     Attributes
     ----------
-    full_equities_path : str
+    tda_equity_symbols_path : str
         The directory path for the file containing equity symbols.
-    tda_futures_path : str
+    tda_future_symbols_path : str
         The directory path for the file containing symbols for td ameritrade futures instruments.
 
     Methods
@@ -272,8 +272,12 @@ class SymbolsConfiguration:
         self.config_present = False
         if config_parser.has_section("symbols"):
             self.config_present = True
-            self.full_equities_path = config_parser.get("symbols", "full_equities_path")
-            self.tda_futures_path = config_parser.get("symbols", "tda_futures_path")
+            self.tda_equity_symbols_path = config_parser.get(
+                "symbols", "tda_equity_symbols_path"
+            )
+            self.tda_future_symbols_path = config_parser.get(
+                "symbols", "tda_future_symbols_path"
+            )
 
 
 class DataPathsConfiguration:
@@ -284,10 +288,8 @@ class DataPathsConfiguration:
 
     Attributes
     ----------
-    equity_data_base_path : str
-        The directory path for where equity data should be saved.
-    futures_data_base_path : str
-        The directory path for where futures data should be saved.
+    data_base_path : str
+        The directory path for where data should be saved.
 
     Methods
     -------
@@ -308,9 +310,4 @@ class DataPathsConfiguration:
         self.config_present = False
         if config_parser.has_section("data_paths"):
             self.config_present = True
-            self.equity_data_base_path = config_parser.get(
-                "data_paths", "equity_data_base_path"
-            )
-            self.futures_data_base_path = config_parser.get(
-                "data_paths", "futures_data_base_path"
-            )
+            self.data_base_path = config_parser.get("data_paths", "data_base_path")
