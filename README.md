@@ -51,7 +51,6 @@ MARGIN = 123456789
 log_root_path = C://Users//meep//OneDrive//Desktop//meep//td-ameritrade-api//logs
 use_bulk_app_name_logging = True
 [symbols]
-full_equities_path = .../tda-symbols.csv
 tda_futures_path = .../tda-futures.csv
 actively_traded_equities_path = .../tda-actively-traded-equities.csv
 [data_paths]
