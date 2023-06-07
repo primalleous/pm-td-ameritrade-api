@@ -9,7 +9,9 @@ from td.config import TdConfiguration
 
 strftime_format = "%Y-%m-%d_%H-%M-%S"
 
-log_formatting_str = "%(levelname)s: tdschwab-api %(asctime)s | %(filename)s line %(lineno)d |\n%(message)s"
+log_formatting_str = (
+    "%(levelname)s: %(asctime)s | %(filename)s line %(lineno)d |\n%(message)s"
+)
 colored_log_formatting_str = "%(log_color)s%(levelname)s%(reset)s: %(blue)s%(asctime)s%(reset)s | %(purple)s%(filename)s line %(lineno)d %(reset)s |\n%(white)s%(message)s"
 
 log_formatter = logging.Formatter(log_formatting_str)

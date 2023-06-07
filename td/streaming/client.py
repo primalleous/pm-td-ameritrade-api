@@ -8,7 +8,7 @@ import logging
 from datetime import datetime
 from websockets import client as ws_client
 from websockets import exceptions as ws_exceptions
-import simplejson as json
+import json
 
 from td.enums.enums import ServiceState, StreamApiResponse
 from td.logger import TdLogger
