@@ -66,12 +66,13 @@ class StreamingApiClient:
         self._handlers = defaultdict(list)
         self.subscribed_services = {}
         self.data_requests = {"requests": []}
-        self.request_number = -1
 
         self.log = TdLogger(__name__).logger
         self._log_debug_enabled = self.log.isEnabledFor(logging.DEBUG)
         self._log_received_messages = log_received_messages
         self._log_sent_messages = log_sent_messages
+        self.request_number = -1
+
         self._connection: ws_client.WebSocketClientProtocol | None = None
 
         self.logged_in_event = asyncio.Event()

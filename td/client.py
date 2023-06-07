@@ -25,6 +25,8 @@ class TdAmeritradeClient:
         self,
         credentials: TdCredentials | None = None,
         config: TdConfiguration | None = None,
+        log_received_messages=False,
+        log_sent_messages=True,
     ) -> None:
         """Initializes the `TdClient` object.
 
@@ -39,11 +41,15 @@ class TdAmeritradeClient:
         if config is None:
             config = TdConfiguration()
 
-        self.td_credentials = credentials
-        self.td_session = TdAmeritradeSession(td_client=self)
+        self._log_received_messages = log_received_messages
+        self._log_sent_messages = log_sent_messages
 
-    def __repr__(self):
-        pass
+        self.td_credentials = credentials
+        self.td_session = TdAmeritradeSession(
+            td_client=self,
+            log_received_messages=self._log_received_messages,
+            log_sent_messages=self._log_sent_messages,
+        )
 
     def quotes(self) -> Quotes:
         """Used to access the `Quotes` Services and metadata.
@@ -225,11 +231,7 @@ class TdAmeritradeClient:
         # return SavedOrders(session=self.td_session)
 
     def streaming_api_client(
-        self,
-        on_message_received=None,
-        on_stream_restarted=None,
-        log_received_messages=False,
-        log_sent_messages=True,
+        self, on_message_received=None, on_stream_restarted=None
     ) -> StreamingApiClient:
         """Used to access the `StreamingApiClient` Services and metadata.
         Returns
@@ -246,6 +248,6 @@ class TdAmeritradeClient:
             session=self.td_session,
             on_message_received=on_message_received,
             on_stream_restarted=on_stream_restarted,
-            log_received_messages=log_received_messages,
-            log_sent_messages=log_sent_messages,
+            log_received_messages=self._log_received_messages,
+            log_sent_messages=self._log_sent_messages,
         )
