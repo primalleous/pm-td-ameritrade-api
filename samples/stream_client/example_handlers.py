@@ -205,7 +205,7 @@ class ChartHistoryFuturesHandler(BaseChartHistoryHandler):
 
         self.handled_event.set()
 
-    async def raw_message_handler(self, msg):
+    def raw_message_handler(self, msg):
         """
         Processes a message with the snapshot key {"snapshot":...} and returns pydantic obj representation.
         """
