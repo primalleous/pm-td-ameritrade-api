@@ -499,6 +499,7 @@ class TdCredentials:
         caps = webdriver.DesiredCapabilities.CHROME.copy()
         caps["goog:loggingPrefs"] = {"browser": "ALL"}
 
+        self.log.info(f"{self.app_name} : if needed, installing ChromeDriverManager")
         driver = webdriver.Chrome(
             service=Service(ChromeDriverManager().install()),
             desired_capabilities=caps,
