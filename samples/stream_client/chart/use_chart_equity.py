@@ -3,8 +3,7 @@ import asyncio
 from td.client import TdAmeritradeClient
 from td.enums.enums import QOSLevel
 from td.config import TdConfiguration
-
-# from samples.stream_client.example_handlers import news_handler
+from samples.stream_client.example_handlers import chart_equity_handler
 
 
 async def callback_func(msg):
@@ -23,17 +22,17 @@ async def run_td_stream_client():
     stream_services.quality_of_service(qos_level=QOSLevel.EXPRESS)
 
 
-async def add_account_activity_handler():
-    pass
-    # TODO: Implement Handlers for ACCT_ACTIVITY
-    # stream_services.add_handler("data", "NEWS_HEADLINE", news_handler.data_message_handler)
+async def add_chart_handler():
+    stream_services.add_handler(
+        "data", "CHART_EQUITY", chart_equity_handler.data_message_handler
+    )
 
 
 async def main():
     await run_td_stream_client()
-    await add_account_activity_handler()
+    await add_chart_handler()
 
-    stream_services.account_activity()
+    stream_services.equity_chart_minute_ohlcv(symbols=["SPY"])
 
     await asyncio.sleep(30)
 

@@ -4,7 +4,8 @@ from rich import print_json
 from td.logger import TdLogger
 from td.models.streaming import (
     ActivesData,
-    ChartData,
+    ChartEquityData,
+    ChartFuturesOrOptionsData,
     ChartHistorySnapshot,
     LevelOneEquityData,
     LevelOneForexData,
@@ -153,7 +154,8 @@ class NewsHandler(SymbolDataUpdater):
 
 timesale_handler = TimesaleDataHandler(TimesaleData)
 
-chart_handler = ChartDataHandler(ChartData)
+chart_futures_or_options_handler = ChartDataHandler(ChartFuturesOrOptionsData)
+chart_equity_handler = ChartDataHandler(ChartEquityData)
 
 book_handler = BookHandler(LevelTwoBookData)
 
