@@ -71,7 +71,9 @@ class SymbolDataUpdater(BaseDataMessageHandler):
 
     async def subscribe_websocket(self, websocket, symbol):
         if symbol in self.latest_data_by_symbol:
-            await websocket.send_json([self.latest_data_by_symbol[symbol].dict()])
+            await websocket.send_json(
+                [x.dict() for x in self.latest_data_by_symbol[symbol]]
+            )
         if websocket not in self.subscribers:
             self.subscribers[websocket] = set()
         self.subscribers[websocket].add(symbol)
