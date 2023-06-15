@@ -4,7 +4,8 @@ from rich import print_json
 from td.logger import TdLogger
 from td.models.streaming import (
     ActivesData,
-    ChartData,
+    ChartEquityData,
+    ChartFuturesOrOptionsData,
     ChartHistorySnapshot,
     LevelOneEquityData,
     LevelOneForexData,
@@ -70,7 +71,9 @@ class SymbolDataUpdater(BaseDataMessageHandler):
 
     async def subscribe_websocket(self, websocket, symbol):
         if symbol in self.latest_data_by_symbol:
-            await websocket.send_json([self.latest_data_by_symbol[symbol].dict()])
+            await websocket.send_json(
+                [x.dict() for x in self.latest_data_by_symbol[symbol]]
+            )
         if websocket not in self.subscribers:
             self.subscribers[websocket] = set()
         self.subscribers[websocket].add(symbol)
@@ -153,7 +156,8 @@ class NewsHandler(SymbolDataUpdater):
 
 timesale_handler = TimesaleDataHandler(TimesaleData)
 
-chart_handler = ChartDataHandler(ChartData)
+chart_futures_or_options_handler = ChartDataHandler(ChartFuturesOrOptionsData)
+chart_equity_handler = ChartDataHandler(ChartEquityData)
 
 book_handler = BookHandler(LevelTwoBookData)
 
