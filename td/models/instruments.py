@@ -1,6 +1,6 @@
 from typing import List
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator, SerializeAsAny
 from td.enums.orders import (
     AssetType,
     CashEquivalentType,
@@ -13,11 +13,12 @@ from td.models.base_api_model import BaseApiModel
 
 class BaseInstrument(BaseApiModel):
     asset_type: str | AssetType
-    cusip: str | None
-    description: str | None
+    cusip: str | None = None
+    description: str | None = None
     symbol: str
 
-    @validator("asset_type")
+    @field_validator("asset_type")
+    @classmethod
     def validate_asset_type(cls, asset_type):
         return cls.validate_str_enum(asset_type, AssetType)
 
@@ -28,58 +29,62 @@ class OptionDeliverable(BaseInstrument):
     currency_type: str | CurrencyType
     asset_type: str | AssetType
 
-    @validator("currency_type")
+    @field_validator("currency_type")
+    @classmethod
     def validate_currency_type(cls, currency_type):
         return cls.validate_str_enum(currency_type, CurrencyType)
 
 
 class EquityInstrument(BaseInstrument):
-    asset_type: str | AssetType = AssetType.EQUITY
+    asset_type: str | AssetType = AssetType.EQUITY.value
 
 
 class OptionInstrument(BaseInstrument):
-    asset_type: str | AssetType = AssetType.OPTION
+    asset_type: str | AssetType = AssetType.OPTION.value
     put_call: str | OptionSide | None = None
     underlying_symbol: str | None = None
     option_multiplier: int | None = None
-    option_deliverables: List[OptionDeliverable] | None = None
+    option_deliverables: SerializeAsAny[List[OptionDeliverable]] | None = None
 
-    @validator("put_call")
+    @field_validator("put_call")
+    @classmethod
     def validate_option_side(cls, put_call):
         return cls.validate_str_enum(put_call, OptionSide)
 
 
 class IndexInstrument(BaseInstrument):
-    asset_type: str | AssetType = AssetType.INDEX
+    asset_type: str | AssetType = AssetType.INDEX.value
 
 
 class MutualFundInstrument(BaseInstrument):
-    asset_type: str | AssetType = AssetType.MUTUAL_FUND
+    asset_type: str | AssetType = AssetType.MUTUAL_FUND.value
     type_: str | MutualFundType = Field(alias="type")
 
-    @validator("type_")
+    @field_validator("type_")
+    @classmethod
     def validate_type_(cls, type_):
         return cls.validate_str_enum(type_, MutualFundType)
 
 
 class CashEquivalentInstrument(BaseInstrument):
-    asset_type: str | AssetType = AssetType.CASH_EQUIVALENT
+    asset_type: str | AssetType = AssetType.CASH_EQUIVALENT.value
     type_: str | CashEquivalentType = Field(alias="type")
 
-    @validator("type_")
+    @field_validator("type_")
+    @classmethod
     def validate_type_(cls, type_):
         return cls.validate_str_enum(type_, CashEquivalentType)
 
 
 class FixedIncomeInstrument(BaseInstrument):
-    asset_type: str | AssetType = AssetType.FIXED_INCOME
+    asset_type: str | AssetType = AssetType.FIXED_INCOME.value
     maturity_date: str
     variable_rate: int
     factor: int
 
 
 class CurrencyInstrument(BaseInstrument):
-    asset_type: str | AssetType = AssetType.CURRENCY
+    asset_type: str | AssetType = AssetType.CURRENCY.value
 
 
 class InstrumentFactory:

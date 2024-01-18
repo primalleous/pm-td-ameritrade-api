@@ -1,5 +1,7 @@
 from typing import Dict, List
-from pydantic import Field
+
+from pydantic import Field, RootModel, SerializeAsAny
+
 from td.enums.enums import ACHStatus, ResponseTransactionType
 from td.models.base_api_model import BaseApiModel
 from td.models.orders import BaseInstrument, Order
@@ -29,21 +31,21 @@ class Fundamental(BaseResponseModel):
     dividend_pay_date: str
     dividend_yield: float
     eps_change: float
-    eps_change_percent_TTM: float
+    eps_change_percent_TTM: float | None = None
     eps_change_year: float
-    eps_TTM: float
-    gross_margin_MRQ: float
-    gross_margin_TTM: float
+    eps_TTM: float | None = None
+    gross_margin_MRQ: float | None = None
+    gross_margin_TTM: float | None = None
     high52: float
     interest_coverage: float
     low52: float
     lt_debt_to_equity: float
     market_cap: float
     market_cap_float: float
-    net_profit_margin_MRQ: float
-    net_profit_margin_TTM: float
-    operating_margin_MRQ: float
-    operating_margin_TTM: float
+    net_profit_margin_MRQ: float | None = None
+    net_profit_margin_TTM: float | None = None
+    operating_margin_MRQ: float | None = None
+    operating_margin_TTM: float | None = None
     pb_ratio: float
     pcf_ratio: float
     pe_ratio: float
@@ -54,7 +56,7 @@ class Fundamental(BaseResponseModel):
     return_on_equity: float
     return_on_investment: float
     rev_change_in: float
-    rev_change_TTM: float
+    rev_change_TTM: float | None = None
     rev_change_year: float
     shares_outstanding: float
     short_int_day_to_cover: float
@@ -85,9 +87,9 @@ class BaseSession(BaseResponseModel):
 
 
 class SessionHours(BaseResponseModel):
-    post_market: List[BaseSession] | None
-    pre_market: List[BaseSession] | None
-    regular_market: List[BaseSession] | None
+    post_market: SerializeAsAny[List[BaseSession]] | None
+    pre_market: SerializeAsAny[List[BaseSession]] | None
+    regular_market: SerializeAsAny[List[BaseSession]] | None
 
 
 class MarketHoursResponse(BaseResponseModel):
@@ -124,59 +126,58 @@ class OptionDeliverable(BaseResponseModel):
 
 
 class OptionQuote(BaseResponseModel):
-    put_call: str
+    put_call: str | None = None
     symbol: str
     description: str
     exchange_name: str
-    bid: float
-    ask: float
-    last: float
+    bid: float | None = None
+    ask: float | None = None
+    last: float | None = None
     mark: float
     bid_size: int
     ask_size: int
-    bid_ask_size: str
+    bid_ask_size: str | None = None
     last_size: int
     high_price: float
     low_price: float
-    open_price: float | None
+    open_price: float | None = None
     close_price: float
     total_volume: int
-    trade_date: str | None
+    trade_date: str | None = None
     trade_time: int = Field(alias="tradeTimeInLong")
     quote_time_in_long: int = Field(alias="quoteTimeInLong")
     net_change: float
     volatility: float
-    delta: float | None
-    gamma: float | None
-    theta: float | None
-    vega: float | None
-    rho: float | None
+    delta: float | None = None
+    gamma: float | None = None
+    theta: float | None = None
+    vega: float | None = None
+    rho: float | None = None
     open_interest: int
     time_value: float
     theoretical_option_value: float
-    theoretical_volatility: float
-    option_deliverables: List[OptionDeliverable] | None
+    theoretical_volatility: float | None = None
+    option_deliverables: SerializeAsAny[List[OptionDeliverable]] | None = None
     strike_price: float
-    expiration_date: int
+    expiration_date: int | None = None
     days_to_expiration: int
-    expiration_type: str
+    expiration_type: str | None = None
     last_trading_day: int
     multiplier: float
     settlement_type: str
-    deliverable_note: str
-    is_index_option: bool | None
-    percent_change: float
-    mark_change: float
-    mark_percent_change: float
-    intrinsic_value: float
-    non_standard: bool
-    in_the_money: bool
-    mini: bool
-    penny_pilot: bool
+    deliverable_note: str | None = None
+    is_index_option: bool | None = None
+    percent_change: float | None = None
+    mark_change: float | None = None
+    mark_percent_change: float | None = None
+    intrinsic_value: float | None = None
+    non_standard: bool | None = None
+    in_the_money: bool | None = None
+    mini: bool | None = None
+    penny_pilot: bool | None = None
 
 
-class ExpDateMap(BaseResponseModel):
-    __root__: Dict[str, List[OptionQuote]]
+ExpDateMap = RootModel[Dict[str, SerializeAsAny[List[OptionQuote]]]]
 
 
 class OptionUnderlying(BaseResponseModel):
@@ -235,7 +236,7 @@ class Candle(BaseResponseModel):
 
 
 class PriceHistoryResponse(BaseResponseModel):
-    candles: List[Candle] | None
+    candles: SerializeAsAny[List[Candle]] | None
     empty: bool
     symbol: str
 
@@ -344,7 +345,7 @@ class IndexQuote(BaseQuotes):
     low_52wk: float = Field(alias="52WkHigh")
 
 
-class OptionQuote(BaseQuotes):
+class BaseQuotesOptionQuote(BaseQuotes):
     bid_price: float
     bid_size: int
     ask_price: float
@@ -624,11 +625,11 @@ class SecuritiesAccount(BaseResponseModel):
     round_trips: int
     is_day_trader: bool
     is_closing_only_restricted: bool
-    positions: List[AccountPositions] | None
-    order_strategies: List[Order] | None
-    initial_balances: AccountInitialBalances | None
-    current_balances: AccountCurrentBalances | None
-    projected_balances: AccountProjectedBalances | None
+    positions: SerializeAsAny[List[AccountPositions]] | None = None
+    order_strategies: SerializeAsAny[List[Order]] | None = None
+    initial_balances: AccountInitialBalances | None = None
+    current_balances: AccountCurrentBalances | None = None
+    projected_balances: AccountProjectedBalances | None = None
 
 
 # Transactions
@@ -646,48 +647,48 @@ class Fees(BaseResponseModel):
 
 
 class TransactionInstrument(BaseResponseModel):
-    symbol: str | None
-    underlying_symbol: str | None
-    option_expiration_date: str | None
-    option_strike_price: float | None
-    put_call: str | None
+    symbol: str | None = None
+    underlying_symbol: str | None = None
+    option_expiration_date: str | None = None
+    option_strike_price: float | None = None
+    put_call: str | None = None
     cusip: str
-    description: str | None
+    description: str | None = None
     asset_type: str
-    bond_maturity_date: str | None
-    bond_interest_rate: float | None
+    bond_maturity_date: str | None = None
+    bond_interest_rate: float | None = None
 
 
 class TransactionItem(BaseResponseModel):
     account_id: int
-    amount: float | None
-    price: float | None
+    amount: float | None = None
+    price: float | None = None
     cost: float
-    parent_order_key: int | None
-    parent_child_indicator: str | None
-    instruction: str | None
-    position_effect: str | None
-    instrument: TransactionInstrument | None
+    parent_order_key: int | None = None
+    parent_child_indicator: str | None = None
+    instruction: str | None = None
+    position_effect: str | None = None
+    instrument: TransactionInstrument | None = None
 
 
 class Transaction(BaseResponseModel):
     type_: ResponseTransactionType = Field(alias="type")
-    clearing_reference_number: str | None
+    clearing_reference_number: str | None = None
     sub_account: str
     settlement_date: str
-    order_id: str | None
-    sma: float | None
-    requirement_reallocation_amount: float | None
-    day_trade_buying_power_effect: float | None
+    order_id: str | None = None
+    sma: float | None = None
+    requirement_reallocation_amount: float | None = None
+    day_trade_buying_power_effect: float | None = None
     net_amount: float
     transaction_date: str
-    order_date: str | None
+    order_date: str | None = None
     transaction_sub_type: str
     transaction_id: int
     cash_balance_effect_flag: bool
     description: str
-    ach_status: ACHStatus | None
-    accrued_interest: float | None
+    ach_status: ACHStatus | None = None
+    accrued_interest: float | None = None
     fees: Fees
     transaction_item: TransactionItem
 

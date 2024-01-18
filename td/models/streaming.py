@@ -1,19 +1,15 @@
 from typing import List
-from pydantic import BaseModel, Field, constr
+from pydantic import BaseModel, Field, SerializeAsAny, constr
 
 
 class BaseStreamingModel(BaseModel):
     class Config:
-        allow_population_by_field_name = True
+        populate_by_name = True
 
     @classmethod
     def get_field_aliases(cls, replace_key=True):
         """Returns aliases in a comma-separated string."""
-        temp = [
-            field.field_info.alias
-            for field in cls.__fields__.values()
-            if field.field_info.alias
-        ]
+        temp = [field.alias for field in cls.model_fields.values() if field.alias]
         if replace_key:
             temp = ["0" if alias == "key" else alias for alias in temp]
         return temp
@@ -33,7 +29,7 @@ class DataResponseContent(BaseStreamingModel):
 
 
 class DataResponseMessage(BaseResponseMessage):
-    content: List[DataResponseContent]
+    content: SerializeAsAny[List[DataResponseContent]]
 
 
 class ExchangeData(BaseStreamingModel):
@@ -46,14 +42,14 @@ class PriceLevelData(BaseStreamingModel):
     price: float = Field(alias="0")
     total_volume: int = Field(alias="1")
     exchange_count: int = Field(alias="2")
-    exchanges: List[ExchangeData] = Field(alias="3")
+    exchanges: SerializeAsAny[List[ExchangeData]] = Field(alias="3")
 
 
 class LevelTwoBookData(DataResponseContent):
     symbol: str = Field(alias="key")  # Ticker symbol in upper case
     timestamp: int = Field(alias="1")
-    bid_data: List[PriceLevelData] = Field(alias="2")
-    ask_data: List[PriceLevelData] = Field(alias="3")
+    bid_data: SerializeAsAny[List[PriceLevelData]] = Field(alias="2")
+    ask_data: SerializeAsAny[List[PriceLevelData]] = Field(alias="3")
 
 
 class LevelOneEquityData(DataResponseContent):
@@ -166,7 +162,7 @@ class LevelOneEquityData(DataResponseContent):
     regular_market_trade_time_long: int | None = Field(
         alias="52", default=None
     )  # Regular market trade time in milliseconds since Epoch
-    delayed: bool | None
+    delayed: bool | None = None
 
 
 class LevelOneOptionData(DataResponseContent):
@@ -313,7 +309,7 @@ class LevelOneFuturesData(DataResponseContent):
     future_expiration_date: int | None = Field(
         alias="35", default=None
     )  # Expiration date of this contract in milliseconds since epoch
-    delayed: bool | None
+    delayed: bool | None = None
 
 
 class LevelOneForexData(DataResponseContent):
@@ -379,7 +375,7 @@ class LevelOneForexData(DataResponseContent):
     mark: float | None = Field(
         alias="29", default=None
     )  # Mark-to-Market value is calculated daily using current prices to determine profit/loss
-    delayed: bool | None
+    delayed: bool | None = None
 
 
 # TODO: mark doesn't match up with spec, it's the contract where it should be a price, maybe other errors too
@@ -462,7 +458,7 @@ class LevelOneFuturesOptionsData(DataResponseContent):
     future_expiration_date: int | None = Field(
         alias="35", default=None
     )  # Expiration date of this contract in milliseconds since epoch
-    delayed: bool | None
+    delayed: bool | None = None
 
 
 class NewsHeadlineData(DataResponseContent):
@@ -477,7 +473,7 @@ class NewsHeadlineData(DataResponseContent):
     keyword_array: str | None = Field(alias="8", default=None)  # Keyword Array
     is_hot: bool | None = Field(alias="9", default=None)  # Is Hot
     story_source: str | None = Field(alias="10", default=None)  # Story Source
-    seq: int | None
+    seq: int | None = None
 
 
 class TimesaleData(DataResponseContent):
@@ -486,7 +482,7 @@ class TimesaleData(DataResponseContent):
     price: float | None = Field(alias="2", default=None)  # Last Price
     volume: int | None = Field(alias="3", default=None)  # Volume
     bid_size: int | None = Field(alias="4", default=None)  # Last Size
-    seq: int | None
+    seq: int | None = None
 
 
 class ChartData(DataResponseContent):
@@ -511,7 +507,7 @@ class ChartFuturesOrOptionsData(ChartData):
     low: float | None = Field(alias="4", default=None)
     close: float | None = Field(alias="5", default=None)
     volume: int | None = Field(alias="6", default=None)
-    seq: int | None
+    seq: int | None = None
 
 
 class ActivesSymbol(BaseStreamingModel):
@@ -524,21 +520,21 @@ class ActivesGroup(BaseStreamingModel):
     group_number: str
     num_entries: str
     total_volume: int
-    symbol_data: List[ActivesSymbol]
+    symbol_data: SerializeAsAny[List[ActivesSymbol]]
 
 
 class ActivesDataGroup(BaseStreamingModel):
     group_id: str
     sample_duration: int
     start_time: constr(
-        regex=r"((0?[1-9]|1[0-2]):[0-5]?\d:[0-5]?\d)|((1[3-9]|2[0-3]):[0-5]?\d:[0-5]?\d)"
+        pattern=r"((0?[1-9]|1[0-2]):[0-5]?\d:[0-5]?\d)|((1[3-9]|2[0-3]):[0-5]?\d:[0-5]?\d)"
     )
     display_time: constr(
-        regex=r"((0?[1-9]|1[0-2]):[0-5]?\d:[0-5]?\d)|((1[3-9]|2[0-3]):[0-5]?\d:[0-5]?\d)"
+        pattern=r"((0?[1-9]|1[0-2]):[0-5]?\d:[0-5]?\d)|((1[3-9]|2[0-3]):[0-5]?\d:[0-5]?\d)"
     )
     num_groups: int
-    num_trades_active: ActivesGroup | None
-    num_shares_active: ActivesGroup | None
+    num_trades_active: ActivesGroup | None = None
+    num_shares_active: ActivesGroup | None = None
 
 
 class ActivesData(DataResponseContent):
@@ -554,7 +550,7 @@ class SnapshotResponseContent(BaseStreamingModel):
 
 
 class SnapshotResponseMessage(BaseResponseMessage):
-    content: List[SnapshotResponseContent]
+    content: SerializeAsAny[List[SnapshotResponseContent]]
 
 
 class ChartHistorySnapshotData(SnapshotResponseContent):
@@ -569,6 +565,6 @@ class ChartHistorySnapshotData(SnapshotResponseContent):
 class ChartHistorySnapshot(SnapshotResponseContent):
     symbol: str = Field(alias="key")
     request_id: str = Field(alias="0")
-    unknown_1: str = Field(alias="1")
-    unknown_2: str = Field(alias="2")
-    data: List[ChartHistorySnapshotData] = Field(alias="3")
+    unknown_1: str | int = Field(alias="1")
+    unknown_2: str | int = Field(alias="2")
+    data: SerializeAsAny[List[ChartHistorySnapshotData]] = Field(alias="3")
