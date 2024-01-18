@@ -1,3 +1,5 @@
+from typing import overload
+
 from td.enums.enums import Projections
 from td.models.rest.query import InstrumentsQuery
 from td.models.rest.response import (
@@ -31,6 +33,10 @@ class Instruments:
 
         self.session = session
 
+    @overload
+    def search_instruments(self, **kwargs):  # This is here to get linter to shut up
+        pass
+
     @QueryInitializer(InstrumentsQuery)
     def search_instruments(self, instruments_query: InstrumentsQuery) -> dict:
         """Search or retrieve instrument data, including fundamental data.
@@ -61,7 +67,7 @@ class Instruments:
         res = self.session.make_request(
             method="get",
             endpoint="instruments",
-            params=instruments_query.dict(by_alias=True),
+            params=instruments_query.model_dump(mode="json", by_alias=True),
         )
 
         if res:

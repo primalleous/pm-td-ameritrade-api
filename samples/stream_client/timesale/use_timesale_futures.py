@@ -1,9 +1,9 @@
 import asyncio
 
-from td.client import TdAmeritradeClient
-from td.enums.enums import QOSLevel
-from td.config import TdConfiguration
 from samples.stream_client.example_handlers import timesale_handler
+from td.client import TdAmeritradeClient
+from td.config import TdConfiguration
+from td.enums.enums import QOSLevel
 
 
 async def callback_func(msg):
@@ -23,6 +23,7 @@ async def run_td_stream_client():
 
 
 async def add_timesale_handler():
+    # pass
     stream_services.add_handler(
         "data", "TIMESALE_FUTURES", timesale_handler.data_message_handler
     )

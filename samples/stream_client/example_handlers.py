@@ -1,6 +1,8 @@
 import logging
+
 from pydantic import ValidationError
 from rich import print_json
+
 from td.logger import TdLogger
 from td.models.streaming import (
     ActivesData,
@@ -21,7 +23,7 @@ from td.streaming.handlers import (
     BaseChartHistoryHandler,
     BaseDataMessageHandler,
 )
-from td.utils.helpers import get_default_file_path, dict_to_json, save_raw_json
+from td.utils.helpers import dict_to_json, get_default_file_path, save_raw_json
 
 
 class SymbolDataUpdater(BaseDataMessageHandler):
@@ -67,7 +69,7 @@ class SymbolDataUpdater(BaseDataMessageHandler):
 
     async def handle_debug(self):
         self.log.debug("\n")
-        print_json(self.latest_message.json(exclude_none=True))
+        print_json(self.latest_message.model_dump_json(exclude_none=True))
 
     async def subscribe_websocket(self, websocket, symbol):
         if symbol in self.latest_data_by_symbol:
@@ -174,7 +176,7 @@ news_handler = NewsHandler(NewsHeadlineData)
 
 class ChartHistoryFuturesHandler(BaseChartHistoryHandler):
     def __init__(self, model, save_to_directory=False):
-        self.model = model
+        super().__init__(model)
         self.latest_message = None
         self.save_to_directory = save_to_directory
         self.handled_event = None
@@ -190,19 +192,28 @@ class ChartHistoryFuturesHandler(BaseChartHistoryHandler):
                 if self.save_to_directory:
                     await self.save_raw_msg(future, timeframe, res)
                 else:
-                    print_json(self.latest_message.json(exclude_none=True))
+                    print_json(self.latest_message.model_dump_json(exclude_none=True))
         except ValidationError as e:
             self.log.error(f"Message Construction Error: {e}")
 
     async def save_raw_msg(self, future, timeframe, msg):
         """
-        Saves to directory specified in config data_paths section.
+        Saves to directory specified in config data_paths section.f
         Uses calling directory if not specified.
         """
         symbol = msg.content[0].symbol
         if future != symbol:
             raise ValueError(f"future {future} != symbol {symbol}")
-        raw_json = {"snapshot": [msg.dict(by_alias=True)]}
+
+        # print(type(msg))
+        # print(type(msg.content))
+        # print(msg)
+        # print("\n\n\n\n\n")
+        # print(msg.model_dump(by_alias=True))
+        # print("\n\n\n\n\n")
+        # print(msg.model_dump(mode="json", by_alias=True))
+
+        raw_json = {"snapshot": [msg.model_dump(mode="str", by_alias=True)]}
 
         path = get_default_file_path(symbol, timeframe)
         await save_raw_json(raw_json, path)

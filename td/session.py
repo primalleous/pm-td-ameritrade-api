@@ -1,8 +1,10 @@
-import json
-import requests
-import logging
 import copy
+import json
+import logging
+
+import requests
 from requests.exceptions import RequestException
+
 from td.logger import TdLogger
 
 
@@ -168,12 +170,43 @@ class TdAmeritradeSession:
             json=json_payload,
         )
 
-        if self._log_debug_enabled and self._log_sent_messages:
-            temp_req = copy.copy(req)
-            temp_req.headers = {"Authorization": "<redacted>"}
-            self.log.debug(
-                f"REST request number: {request_number}, Request details: {temp_req.__dict__}"
-            )
+        # if self._log_debug_enabled:
+        #     if self._log_sent_messages:
+        #         temp_req = copy.copy(req)
+        #         temp_req.headers = {"Authorization": "<redacted>"}
+        #         self.log.debug(
+        #             f"REST request number: {request_number}, Request details: {temp_req.__dict__}"
+        #         )
+        # # Construct the curl command
+        # curl_cmd = "curl -X {} ".format(method.upper())
+
+        # # Add headers to the curl command
+        # for key, value in headers.items():
+        #     header_value = value if key != "Authorization" else "<redacted>"
+        #     curl_cmd += "--header '{}: {}' ".format(key, header_value)
+
+        # # Append URL parameters for GET request
+        # if method.upper() == "GET" and params:
+        #     # Check if params is a string and convert it to a dictionary
+        #     if isinstance(params, str):
+        #         try:
+        #             params = json.loads(params)
+        #         except json.JSONDecodeError:
+        #             self.log.error("Failed to decode params from JSON string.")
+        #             raise
+        #     query_string = "&".join(
+        #         [f"{key}={value}" for key, value in params.items()]
+        #     )
+        #     curl_cmd += "'{}?{}'".format(url, query_string)
+        # else:
+        #     # For other types of requests (POST, PUT, etc.)
+        #     if json_payload:
+        #         curl_cmd += "--data '{}' ".format(json.dumps(json_payload))
+        #     elif data:
+        #         curl_cmd += "--data-raw '{}' ".format(data)
+
+        # # Log the curl command
+        # self.log.debug(f"Curl Command: {curl_cmd}")
 
         try:
             response: requests.Response = session.send(

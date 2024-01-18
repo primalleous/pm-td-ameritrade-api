@@ -1,3 +1,5 @@
+from typing import overload
+
 from td.models.rest.query import MarketHoursQuery
 from td.models.rest.response import MarketHoursResponse
 from td.session import TdAmeritradeSession
@@ -24,6 +26,12 @@ class MarketHours:
         """
 
         self.session = session
+
+    @overload
+    def get_multiple_market_hours(
+        self, **kwargs
+    ):  # This is here to get linter to shut up
+        pass
 
     @QueryInitializer(MarketHoursQuery)
     def get_multiple_market_hours(self, market_hours_query: MarketHoursQuery) -> dict:
@@ -53,7 +61,7 @@ class MarketHours:
         res = self.session.make_request(
             method="get",
             endpoint="marketdata/hours",
-            params=market_hours_query.dict(by_alias=True),
+            params=market_hours_query.model_dump(mode="json", by_alias=True),
         )
 
         if res:
@@ -65,6 +73,10 @@ class MarketHours:
                     )
             return temp_dict
         return {}
+
+    @overload
+    def get_market_hours(self, **kwargs):  # This is here to get linter to shut up
+        pass
 
     @QueryInitializer(MarketHoursQuery)
     def get_market_hours(self, market_hours_query: MarketHoursQuery) -> dict:
@@ -95,7 +107,7 @@ class MarketHours:
         res = self.session.make_request(
             method="get",
             endpoint=f"marketdata/{market_hours_query.markets}/hours",
-            params=market_hours_query.dict(by_alias=True),
+            params=market_hours_query.model_dump(mode="json", by_alias=True),
         )
 
         if res:

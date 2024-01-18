@@ -16,8 +16,10 @@ class BaseDataMessageHandler(ABC):
         self.model = model
 
     def construct_message(self, msg):
-        if msg.get("content", None):
-            msg["content"] = [self.model(**data) for data in msg["content"]]
+        content = msg.get("content", None)
+
+        if content:
+            msg["content"] = [self.model(**data) for data in content]
             return DataResponseMessage(**msg)
         return None
 
@@ -88,6 +90,28 @@ class BaseChartHistoryHandler(BaseDataMessageHandler):
 
     def construct_message(self, msg):
         if msg.get("content", None):
+            # print(f"self.model is {self.model}")
+            # print(f"type of msg content{type(msg['content'])}")
+            # print(f"len of msg content{len(msg['content'])}")
+
+            # print(f"msg is {msg}")
+            # print(f"construct_message msg is {msg}")
+            # print(f"first elem of msg content{msg['content'][0]}")
+
             msg["content"] = [self.model(**data) for data in msg["content"]]
+            # print(msg["content"])
+            # print("\n\n\n\n\n\n\n")
+            # print(msg["content"][0].model_dump(by_alias=True))
+            # print("above model_dump second lowest level\n\n\n\n\n\n\n")
+            # print(msg["content"][0].data[0].model_dump(by_alias=True))
+            # print("above model_dump lowest level\n\n\n\n\n\n\n")
+
+            # temp = SnapshotResponseMessage(**msg)
+            # # print(f"temp is {temp}")
+
+            # # print(temp.model_dump(by_alias=True, round_trip=True))
+            # # print("above model_dump highest level\n\n\n\n\n\n\n")
+            # return temp
+
             return SnapshotResponseMessage(**msg)
         return None

@@ -5,9 +5,7 @@ from pathlib import Path
 from typing import Callable, Generic, ParamSpec, TypeVar
 
 import aiofiles
-from humps import camelize
 from pydantic import BaseModel
-from rich import print
 
 from td.config import TdConfiguration
 
@@ -19,6 +17,7 @@ R = TypeVar("R")
 
 
 class QueryInitializer(Generic[P, R]):
+
     """
     Decorator class for initializing pydantic query objects.
 
@@ -62,14 +61,22 @@ class QueryInitializer(Generic[P, R]):
                 The result of calling the decorated function with the instance of query_class.
             """
             inner_wrapper.__doc__ = func.__doc__
+
             # Check if the first argument is already an instance of query_class
             if len(args) > 0 and isinstance(args[0], query_class):
                 query_instance = args[0]
+            # Check if only a dictionary passed in
             elif len(args) > 0 and isinstance(args[0], dict):
                 query_instance = query_class(**args[0])
-            else:
-                # Instantiate the query_class with the arguments
-                query_instance = query_class(*args, **kwargs)
+            elif len(kwargs) > 0:
+                values = kwargs.values()
+                query_value = [v for v in values if isinstance(v, query_class)]
+                print(query_value)
+                if len(query_value) != 0:
+                    query_instance = query_value[0]
+                else:
+                    # Instantiate the query_class with the arguments
+                    query_instance = query_class(*args, **kwargs)
 
             # Call the function with the instance
             return func(self, query_instance)
@@ -80,7 +87,7 @@ class QueryInitializer(Generic[P, R]):
 # Custom conversion function to convert Pydantic objects to JSON-compatible types
 def convert_to_json(obj):
     if isinstance(obj, BaseModel):
-        return obj.dict()
+        return obj.model_dump_json()
     return obj
 
 
@@ -88,23 +95,6 @@ def convert_to_json(obj):
 def dict_to_json(input_dict):
     json_dict = {key: convert_to_json(value) for key, value in input_dict.items()}
     return json.dumps(json_dict, default=lambda o: o.__dict__)
-
-
-def to_camel(string: str) -> str:
-    """
-    Converts a snake_case string to camelCase.
-
-    Parameters:
-    string (str): The string to convert to camelCase.
-
-    Returns:
-    str: The input string in camelCase.
-
-    Example:
-    >>> to_camel('hello_world')
-    'helloWorld'
-    """
-    return camelize(string)
 
 
 def is_valid_iso_date_str(date_str: str) -> bool:
@@ -176,22 +166,6 @@ def convert_to_unix_time_ms(time_to_convert: int | date | datetime):
 
     # If it's not a supported type, raise an error
     raise ValueError("Unsupported time format")
-
-
-# async def save_raw_json(raw_json, timeframe, symbol):
-#     # raw_json = pydantic_object.dict(by_alias=True)
-#     today = datetime.today()
-#     day, month, year = str(today.day), str(today.month), str(today.year)
-#     datepath = Path()/year/month/day
-#     symbol_processed = symbol.replace("/", "")
-#     base_directory = tda_futures_base_path/timeframe/symbol_processed
-#     filename = Path(symbol_processed + "-" + year + "-" + month  + "-" +  day + ".json")
-#     path = base_directory/datepath/filename
-#     path.parent.mkdir(parents=True, exist_ok=True)
-#     print(f"Received data for {symbol}, saving it to: {path}")
-
-#     with open(path, "w", encoding="utf-8") as f:
-#         json.dump(raw_json, f)
 
 
 def get_default_file_path(symbol, timeframe, instrument_type="future"):

@@ -1,4 +1,5 @@
-from typing import List
+from typing import List, overload
+
 from td.models.rest.query import MoversQuery
 from td.models.rest.response import Mover
 from td.session import TdAmeritradeSession
@@ -25,6 +26,10 @@ class Movers:
         """
 
         self.session = session
+
+    @overload
+    def get_movers(self, **kwargs):  # This is here to get linter to shut up
+        pass
 
     @QueryInitializer(MoversQuery)
     def get_movers(self, movers_query: MoversQuery) -> List[Mover]:
@@ -71,7 +76,7 @@ class Movers:
         res = self.session.make_request(
             method="get",
             endpoint=f"marketdata/{movers_query.index}/movers",
-            params=movers_query.dict(by_alias=True),
+            params=movers_query.model_dump(mode="json", by_alias=True),
         )
 
         if res:

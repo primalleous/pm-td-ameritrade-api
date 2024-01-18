@@ -116,6 +116,7 @@ celerybeat.pid
 .venv
 env/
 venv/
+tdenv/
 ENV/
 env.bak/
 venv.bak/
@@ -143,8 +144,8 @@ config/
 .resources and notes/
 venv_test/
 
-# chrome driver related
-chromedriver*
+# .ignore prefix
+**/.ignore*
 
 #logs
 logs*

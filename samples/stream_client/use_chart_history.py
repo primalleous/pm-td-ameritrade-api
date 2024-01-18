@@ -1,16 +1,16 @@
 import asyncio
+from datetime import datetime, timedelta
 from pathlib import Path
-from datetime import datetime
-from datetime import timedelta
+
 import pandas as pd
 
-from td.client import TdAmeritradeClient
-from td.enums.enums import ChartFuturesFrequencies, QOSLevel
-from td.config import TdConfiguration
 from samples.stream_client.example_handlers import (
     ChartHistoryFuturesHandler,
     chart_history_handler,
 )
+from td.client import TdAmeritradeClient
+from td.config import TdConfiguration
+from td.enums.enums import ChartFuturesFrequencies, QOSLevel
 from td.models.streaming import ChartHistorySnapshot
 
 
@@ -124,8 +124,14 @@ async def main():
     if tda_futures_csv_path:
         futures_list = pd.read_csv(tda_futures_csv_path)["Symbol"].to_list()
     else:
+        # pass
         futures_list = ["/ES", "/NQ", "/YM", "/RTY"]
+    # futures_list = ["/ES"]
+    # futures_list = ["/ES", "/NQ", "/YM", "/RTY"]
     timeframe_list = ["daily", "minute"]
+    # timeframe_list = ["daily"]
+
+    # futures_list.remove("/ES")
 
     await run_td_stream_client()
     await bulk_add_to_chart_history_symbol_queue(

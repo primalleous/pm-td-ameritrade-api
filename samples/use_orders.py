@@ -1,5 +1,9 @@
 import json
+from datetime import datetime
+
+from rich import print as rprint
 from rich import print_json
+
 from td.client import TdAmeritradeClient
 from td.config import TdConfiguration
 from td.models.orders import Order
@@ -19,7 +23,9 @@ orders_service = td_client.orders()
 # Query or Path
 
 order_query = orders_service.get_orders_by_query(
-    account_number, from_entered_time="2023-05-25", to_entered_time="2023-05-30"
+    account_number,
+    from_entered_time="2024-01-12",
+    to_entered_time=datetime.today().date().isoformat(),
 )
 
 for order in order_query:
@@ -27,13 +33,13 @@ for order in order_query:
         order_json = json.dumps(order)
         print_json(order_json)
     else:
-        print_json(order.json(exclude_none=True))
+        print_json(order.model_dump_json(exclude_none=True))
 
 
 order_path = orders_service.get_orders_by_path(
     account_number,
-    from_entered_time="2023-05-25",
-    to_entered_time="2023-05-30",
+    from_entered_time="2024-01-12",
+    to_entered_time=datetime.today().date().isoformat(),
     order_status="WORKING",
 )
 
@@ -42,7 +48,7 @@ for order in order_path:
         order_json = json.dumps(order)
         print_json(order_json)
     else:
-        print_json(order.json(exclude_none=True))
+        print_json(order.model_dump_json(exclude_none=True))
 
 
 # Get specific order
@@ -53,11 +59,11 @@ if not isinstance(order, Order):
     order_json = json.dumps(order)
     print_json(order_json)
 else:
-    print_json(order.json(by_alias=True, exclude_none=True))
+    print_json(order.model_dump_json(by_alias=True, exclude_none=True))
 
 
 # Cancel Order
 
 order_cancel = orders_service.cancel_order(account_number, order_id="6238634928")
 
-print(order_cancel)
+rprint(order_cancel)

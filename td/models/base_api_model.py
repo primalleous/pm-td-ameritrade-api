@@ -1,14 +1,15 @@
 from datetime import date, datetime
-from pydantic import BaseModel
 
-from td.utils.helpers import is_valid_iso_date_str, to_camel
+from pydantic import BaseModel, ConfigDict
+from pydantic.alias_generators import to_camel
+
+from td.utils.helpers import is_valid_iso_date_str
 
 
 class BaseApiModel(BaseModel):
-    class Config:
-        alias_generator = to_camel
-        allow_population_by_field_name = True
-        use_enum_values = True
+    model_config = ConfigDict(
+        alias_generator=to_camel, populate_by_name=True, use_enum_values=True
+    )
 
     @staticmethod
     def validate_iso_date_field(value):
