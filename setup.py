@@ -1,5 +1,4 @@
-from setuptools import setup
-from setuptools import find_namespace_packages
+from setuptools import find_namespace_packages, setup
 
 # load the README file.
 with open(file="README.md", mode="r") as fh:
@@ -7,22 +6,22 @@ with open(file="README.md", mode="r") as fh:
 
 setup(
     name="pm-td-ameritrade-api",
-    author="Zach Fortier",
-    author_email="primalmachinaz@gmail.com",
-    version="0.1.3",
-    description="A python client lirbary for the TD Ameritrade API.",
+    author="primalmachinai",
+    author_email="primalmachinai@gmail.com",
+    version="1.0",
+    description="A python client library for the TD Ameritrade API.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/primalmachina/pm-td-ameritrade-api",
+    url="https://github.com/primalmachinai/pm-td-ameritrade-api",
     install_requires=[
-        "aiofiles>=0.7.0",
-        "pydantic>=1.10.2",
-        "rich>=13.2.0",
-        "websockets>=10.4",
-        "pyhumps>=3.7.1",
+        "aiofiles>=23.2.1",
+        "pydantic>=2.4.2",
+        "rich>=13.6.0",
+        "websockets>=11.0.3",
         "colorlog>=6.7.0",
-        "selenium>=4.7.2",
-        "requests>=2.28.1",
+        "selenium>=4.14.0",
+        "requests>=2.31.0",
+        "webdriver_manager>=4.0.1",
     ],
     keywords="finance, td ameritrade, api",
     packages=find_namespace_packages(

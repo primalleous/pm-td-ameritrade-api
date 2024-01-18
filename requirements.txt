@@ -1,9 +1,8 @@
-aiofiles>=23.1.0
-pydantic>=1.10.2
-rich>=13.2.0
-websockets>=10.4
-pyhumps>=3.7.1
+aiofiles>=23.2.1
+pydantic>=2.4.2
+rich>=13.6.0
+websockets>=11.0.3
 colorlog>=6.7.0
-selenium>=4.7.2
+selenium>=4.14.0
 requests
 webdriver_manager
