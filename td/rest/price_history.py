@@ -1,3 +1,5 @@
+from typing import overload
+
 from td.models.rest.query import PriceHistoryQuery
 from td.models.rest.response import PriceHistoryResponse
 from td.session import TdAmeritradeSession
@@ -29,6 +31,10 @@ class PriceHistory:
         """
 
         self.session = session
+
+    @overload
+    def get_price_history(self, **kwargs):  # This is here to get linter to shut up
+        pass
 
     @QueryInitializer(PriceHistoryQuery)
     def get_price_history(self, price_history_query: PriceHistoryQuery) -> dict:
@@ -79,7 +85,7 @@ class PriceHistory:
         res = self.session.make_request(
             method="get",
             endpoint=f"marketdata/{price_history_query.symbol}/pricehistory",
-            params=price_history_query.dict(by_alias=True),
+            params=price_history_query.model_dump(mode="json", by_alias=True),
         )
 
         if res:

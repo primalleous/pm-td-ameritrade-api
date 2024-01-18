@@ -60,7 +60,7 @@ class TdConfiguration:
 
             """
 
-            def __init__(self, config_parser):
+            def __init__(self, config_parser):          
                 self.app_name = config_parser.get("app_info", "app_name")
                 self.client_id = config_parser.get("app_info", "client_id")
                 self.redirect_uri = config_parser.get("app_info", "redirect_uri")

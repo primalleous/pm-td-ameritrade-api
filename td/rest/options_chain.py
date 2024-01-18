@@ -1,7 +1,9 @@
 from datetime import datetime
+from typing import overload
+
+from td.models.rest.query import OptionChainQuery
 from td.models.rest.response import OptionChain
 from td.session import TdAmeritradeSession
-from td.models.rest.query import OptionChainQuery
 from td.utils.helpers import QueryInitializer
 
 
@@ -27,8 +29,12 @@ class OptionsChain:
 
         self.session = session
 
+    @overload
+    def get_option_chain(self, **kwargs):  # This is here to get linter to shut up
+        pass
+
     @QueryInitializer(OptionChainQuery)
-    def get_option_chain(self, option_chain_query: OptionChainQuery) -> OptionChain:
+    def get_option_chain(self, option_chain_query: OptionChainQuery) -> dict:
         """Get option chain for an optionable Symbol.
 
         Documentation
@@ -78,7 +84,7 @@ class OptionsChain:
         res = self.session.make_request(
             method="get",
             endpoint="marketdata/chains",
-            params=option_chain_query.dict(by_alias=True),
+            params=option_chain_query.model_dump(mode="json", by_alias=True),
         )
 
         if res:
@@ -93,9 +99,12 @@ class OptionsChain:
                         try:
                             datetime.strptime(date_str, "%Y-%m-%d")
                         except ValueError:
-                            self.log(
+                            print(
                                 f"Date parsing error: {date_str} is not a valid date."
                             )
+                            # self.log(
+                            #     f"Date parsing error: {date_str} is not a valid date."
+                            # )
                             continue
 
                         for strike_price, option_list in strike_map.items():
@@ -106,3 +115,4 @@ class OptionsChain:
 
                     res[option_type] = new_map
             return OptionChain(**res)
+        return {}

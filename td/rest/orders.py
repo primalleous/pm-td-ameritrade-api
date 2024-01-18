@@ -1,11 +1,11 @@
+from datetime import date, datetime
 from enum import Enum
 from typing import List
-from datetime import date
-from datetime import datetime
-from td.models.base_api_model import BaseApiModel
-from td.session import TdAmeritradeSession
+
 from td.enums.orders import OrderStatus
+from td.models.base_api_model import BaseApiModel
 from td.models.orders import Order
+from td.session import TdAmeritradeSession
 
 
 class Orders:
@@ -238,7 +238,7 @@ class Orders:
         return self.session.make_request(
             method="post",
             endpoint=endpoint,
-            json_payload=order_object.dict(by_alias=True),
+            json_payload=order_object.model_dump(mode="json", by_alias=True),
         )
 
     def replace_order(
@@ -284,7 +284,7 @@ class Orders:
         return self.session.make_request(
             method="put",
             endpoint=endpoint,
-            json_payload=order_object.dict(by_alias=True),
+            json_payload=order_object.model_dump(mode="json", by_alias=True),
         )
 
     def cancel_order(self, account_id: str, order_id: str) -> dict:

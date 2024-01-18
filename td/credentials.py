@@ -1,16 +1,18 @@
 import json
-import pathlib
 import multiprocessing as mp
+import pathlib
+from datetime import datetime
 from time import sleep
 from typing import Union
-from datetime import datetime
 from urllib.parse import unquote
+
 import requests
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
+
 from td.config import TdConfiguration
 from td.logger import TdLogger
 
@@ -496,14 +498,11 @@ class TdCredentials:
         # it should be run without UI (Headless)
         options.headless = True
 
-        caps = webdriver.DesiredCapabilities.CHROME.copy()
-        caps["goog:loggingPrefs"] = {"browser": "ALL"}
+        options.set_capability("goog:loggingPrefs", {"browser": "ALL"})
 
         self.log.info(f"{self.app_name} : if needed, installing ChromeDriverManager")
         driver = webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()),
-            desired_capabilities=caps,
-            options=options,
+            service=Service(ChromeDriverManager().install()), options=options
         )
 
         data = {
