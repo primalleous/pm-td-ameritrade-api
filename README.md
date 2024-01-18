@@ -1,4 +1,4 @@
-# ``pm-td-ameritrade-api``: Revamped wrapper for the TD Ameritrade API Spec
+# ``pm-td-ameritrade-api``: A wrapper for the TD Ameritrade API Spec
 
 ## **What's new???**
 * ``Pydantic Models`` for nearly everything (Orders, Rest and streaming endpoints, etc.)
@@ -51,10 +51,11 @@ MARGIN = 123456789
 log_root_path = C://Users//meep//OneDrive//Desktop//meep//td-ameritrade-api//logs
 use_bulk_app_name_logging = True
 [symbols]
-tda_equity_symbols_path = .../tda-symbols.csv
-tda_future_symbols_path = .../tda-futures.csv
+tda_futures_path = .../tda-futures.csv
+actively_traded_equities_path = .../tda-actively-traded-equities.csv
 [data_paths]
-data_base_path = .../tda-data/
+equity_data_base_path = .../tda-data/equity
+futures_data_base_path = .../tda-data/future
 ```
 
 So now in terms of the login flow/process, if the environment variable is specified, you can just do this:
