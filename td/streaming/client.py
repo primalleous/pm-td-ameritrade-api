@@ -384,7 +384,21 @@ class StreamingApiClient:
             self.log.debug(f"Sending message:\n{log_safe_message}")
 
         async with self._websocket_lock:
-            await self._connection.send(message)
+            try:
+                await self._connection.send(message)
+            except:
+                modified_data = json.loads(message)
+                # Remove the credential and token fields from the copy
+                for req in modified_data["requests"]:
+                    params = req["parameters"]
+                    if "credential" in params:
+                        params["credential"] = "<redacted>"
+                    if "token" in params:
+                        params["token"] = "<redacted>"
+
+                # Log the modified message
+                log_safe_message = json.dumps(modified_data)
+                self.log.error(f"Exception sending message:\n{log_safe_message}")
 
     async def _receive_message(self, return_value: bool = False) -> dict:
         """Receives and processes the messages as needed.
