@@ -1,4 +1,5 @@
 from rich import print_json
+
 from td.client import TdAmeritradeClient
 from td.config import TdConfiguration
 from td.enums.orders import Duration, OrderInstruction, OrderStrategyType, Session
@@ -58,7 +59,7 @@ otoco = one_triggers_one_cancels_other(
     option_limit_sell_order,
     option_stop_limit_sell_to_close_order,
 ).build()
-print_json(otoco.json(exclude_none=True))
+print_json(otoco.model_dump_json(exclude_none=True))
 # orders_service.place_order(account_number, otoco)
 
 
@@ -68,5 +69,5 @@ option_market_buy_order = option_buy_to_open_limit(option_symbol, 1, 0.10)
 option_market_sell_order = option_sell_to_close_limit(option_symbol, 1, 0.10).build()
 
 fts = first_triggers_second(option_market_buy_order, option_market_sell_order).build()
-print_json(fts.json(exclude_none=True))
+print_json(fts.model_dump_json(exclude_none=True))
 # orders_service.place_order(account_number, fts)

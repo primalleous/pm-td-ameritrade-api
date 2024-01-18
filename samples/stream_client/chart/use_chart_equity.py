@@ -1,14 +1,14 @@
 import asyncio
 
-from td.client import TdAmeritradeClient
-from td.enums.enums import QOSLevel
-from td.config import TdConfiguration
 from samples.stream_client.example_handlers import chart_equity_handler
+from td.client import TdAmeritradeClient
+from td.config import TdConfiguration
+from td.enums.enums import QOSLevel
 
 
 async def callback_func(msg):
-    # pass
-    print(msg)
+    pass
+    # print(msg)
 
 
 config = TdConfiguration()

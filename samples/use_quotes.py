@@ -1,5 +1,8 @@
-from pprint import pprint
+from rich import print as rprint
+from rich import print_json
+
 from td.client import TdAmeritradeClient
+from td.orders.options import OptionSymbol
 
 # Initialize the `TdAmeritradeClient`
 td_client = TdAmeritradeClient()
@@ -10,29 +13,36 @@ quote_service = td_client.quotes()
 # Single Quote
 
 # EQUITY
-pprint(quote_service.get_quote(instrument="AAPL"))
+rprint(quote_service.get_quote(instrument="AAPL"))
 
 #  INDEX
-pprint(quote_service.get_quote(instrument="$DJI"))
+rprint(quote_service.get_quote(instrument="$DJI"))
 
 #  MUTUAL_FUND
-pprint(quote_service.get_quote(instrument="VFIAX"))
+rprint(quote_service.get_quote(instrument="VFIAX"))
 
 # OPTION
-pprint(quote_service.get_quote(instrument="SPY_053023P421"))
+option_symbol = OptionSymbol("SPY", "011624", "C", "480").build()
+res = quote_service.get_quote(instrument=option_symbol)
+if res:
+    print_json(res[option_symbol].model_dump_json())
 
 # ETF
-pprint(quote_service.get_quote(instrument="SPY"))
+rprint(quote_service.get_quote(instrument="SPY"))
 
-# # FOREX - not working for me
-# # pprint(quote_service.get_quote(instrument="EUR/USD"))
+# FOREX - not working for me
+# rprint(quote_service.get_quote(instrument="EUR/USD"))
 
-# # FUTURE - not working for me
-# # pprint(quote_service.get_quote(instrument="/ES"))
+# FUTURE - not working for me
+# rprint(quote_service.get_quote(instrument="/ES"))
 
-# # FUTURE_OPTION
-# # ...
+# FUTURE_OPTION
+# ...
 
 
 # Multiple quotes.
-pprint(quote_service.get_quotes(instruments=["AAPL", "SQ"]))
+res = quote_service.get_quotes(instruments=["SPY", "QQQ"])
+if res:
+    print_json(res["SPY"].model_dump_json())
+    print()
+    print_json(res["QQQ"].model_dump_json())

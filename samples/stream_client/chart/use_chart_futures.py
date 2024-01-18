@@ -1,14 +1,14 @@
 import asyncio
 
-from td.client import TdAmeritradeClient
-from td.enums.enums import QOSLevel
-from td.config import TdConfiguration
 from samples.stream_client.example_handlers import chart_futures_or_options_handler
+from td.client import TdAmeritradeClient
+from td.config import TdConfiguration
+from td.enums.enums import QOSLevel
 
 
 async def callback_func(msg):
-    # pass
-    print(msg)
+    pass
+    # print(msg)
 
 
 config = TdConfiguration()
@@ -22,7 +22,7 @@ async def run_td_stream_client():
     stream_services.quality_of_service(qos_level=QOSLevel.EXPRESS)
 
 
-async def add_chart_handler():
+async def add_chart_futures_handler():
     stream_services.add_handler(
         "data", "CHART_FUTURES", chart_futures_or_options_handler.data_message_handler
     )
@@ -30,7 +30,7 @@ async def add_chart_handler():
 
 async def main():
     await run_td_stream_client()
-    await add_chart_handler()
+    await add_chart_futures_handler()
 
     stream_services.futures_chart_minute_ohlcv(symbols=["/ES"])
 
