@@ -138,7 +138,7 @@ Orders has a recursive model defined in orders.py along with a builder class, bu
 res = self.session.make_request(
  method="get",
  endpoint=f"marketdata/{movers_query.index}/movers",
- params=movers_query.dict(by_alias=True),
+ params=movers_query.model_dump(mode="json", by_alias=True),
  )
  ```
 

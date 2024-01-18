@@ -8,7 +8,7 @@ setup(
     name="pm-td-ameritrade-api",
     author="primalmachinai",
     author_email="primalmachinai@gmail.com",
-    version="1.0",
+    version="0.9.0",
     description="A python client library for the TD Ameritrade API.",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -29,7 +29,7 @@ setup(
     ),
     include_package_data=True,
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Financial and Insurance Industry",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
