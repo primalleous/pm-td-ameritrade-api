@@ -6,8 +6,8 @@ with open(file="README.md", mode="r") as fh:
 
 setup(
     name="pm-td-ameritrade-api",
-    author="primalmachinai",
-    author_email="primalmachinai@gmail.com",
+    author="primaleae",
+    author_email="primaleae@gmail.com",
     version="0.9.0",
     description="A python client library for the TD Ameritrade API.",
     long_description=long_description,
