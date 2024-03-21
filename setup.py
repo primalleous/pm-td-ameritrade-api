@@ -12,7 +12,7 @@ setup(
     description="A python client library for the TD Ameritrade API.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/primalmachinai/pm-td-ameritrade-api",
+    url="https://github.com/primaleae/pm-td-ameritrade-api",
     install_requires=[
         "aiofiles>=23.2.1",
         "pydantic>=2.4.2",
